@@ -13,4 +13,4 @@ aws efs create-file-system --performance-mode generalPurpose --throughput-mode b
 #Checking for EFS filesystem status
 aws efs describe-file-systems --file-system-id FILESYSTEM_NAME
 
-https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/efs.html
+#https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/efs.html
