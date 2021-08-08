@@ -1,0 +1,7 @@
+
+-- get the bucket policy:
+aws s3api get-bucket-policy --bucket <your-bucket-name>
+
+
+-- get object ACL
+aws s3api get-object-acl --bucket <your-bucket-name> --key <object-name>
