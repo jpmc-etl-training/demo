@@ -1,0 +1,18 @@
+version: '1.0'
+steps:
+  main_clone:
+    title: Cloning main repository...
+    type: git-clone
+    repo: 'codefreshdemo/cf-example-build-arguments'
+    revision: 'master'
+    git: github
+  build_my_app:
+    title: Building Node.Js Docker Image
+    type: build
+    image_name: my-app
+    working_directory: '.'
+    tag: 'master'
+    dockerfile: Dockerfile
+    build_arguments:
+      - NODE_VERSION=8
+      - APP_DIR=/usr/src/app
