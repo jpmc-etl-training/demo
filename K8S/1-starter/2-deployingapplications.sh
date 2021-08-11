@@ -69,8 +69,7 @@ kubectl describe replicaset hello-world | more
 kubectl describe pod hello-world-[tab][tab] | more
 
 
-#For a deep dive into Deployments check out 'Managing Kubernetes Controllers and Deployments'
-#https://www.pluralsight.com/courses/managing-kubernetes-controllers-deployments
+
 
 
 
