@@ -64,7 +64,7 @@ kubectl create -h | more
 
 
 #Ok, so now that we're tired of typing commands out, let's enable bash auto-complete of our kubectl commands
-sudo apt-get install -y bash-completion
+sudo yum install epel-release.noarch bash-completion.noarch -y 
 echo "source <(kubectl completion bash)" >> ~/.bashrc
 source ~/.bashrc
 kubectl g[tab][tab] po[tab][tab] --all[tab][tab]
