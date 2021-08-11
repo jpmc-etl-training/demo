@@ -1,0 +1,9 @@
+Create account in https://hub.docker.com/
+
+
+Create the New Container Repo in ECR 
+
+login using aws cli on the node with role with access to ecr
+
+aws ecr create-repository \
+    --repository-name YOUNAME/REPONAME

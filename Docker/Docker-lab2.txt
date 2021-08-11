@@ -1,0 +1,1311 @@
+login as: vagrant
+Authenticating with public key "imported-openssh-key"
+Welcome to Ubuntu 18.04.3 LTS (GNU/Linux 4.15.0-72-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Mon May 24 01:57:40 UTC 2021
+
+  System load:  0.16              Processes:              95
+  Usage of /:   3.9% of 61.80GB   Users logged in:        0
+  Memory usage: 17%               IP address for eth0:    10.0.2.15
+  Swap usage:   0%                IP address for docker0: 172.17.0.1
+
+ * Super-optimized for small spaces - read how we shrank the memory
+   footprint of MicroK8s to make it the smallest full K8s around.
+
+   https://ubuntu.com/blog/microk8s-memory-optimisation
+
+218 packages can be updated.
+165 updates are security updates.
+
+
+
+This system is built by the Bento project by Chef Software
+More information can be found at https://github.com/chef/bento
+Last login: Thu May 20 02:05:04 2021 from 10.0.2.2
+vagrant@vagrant:~$ sudo su -
+root@vagrant:~#
+root@vagrant:~# cd projects/
+root@vagrant:~/projects# ls
+app1  app2  Dockerfile
+root@vagrant:~/projects# cd app1
+root@vagrant:~/projects/app1# ls
+Dockerfile  file1  files  putty-0.75.tar.gz
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker images
+REPOSITORY                        TAG       IMAGE ID       CREATED        SIZE
+app2                              v1        8c1a9ed5bed0   3 days ago     73MB
+test                              v3        9d2edc631a78   4 days ago     110MB
+<none>                            <none>    9c4d46dbae99   4 days ago     101MB
+test                              v2        4c42757d8fd8   4 days ago     101MB
+test                              v1        4a34d07a1a92   4 days ago     101MB
+base                              v2        611dc4643fd0   4 days ago     104MB
+new                               v2        9cc576452e43   4 days ago     104MB
+<none>                            <none>    b244d381b6f2   4 days ago     112MB
+<none>                            <none>    07f275f0d9e6   4 days ago     104MB
+<none>                            <none>    3900c466da4b   4 days ago     101MB
+<none>                            <none>    360193fe7e80   4 days ago     101MB
+base1                             v4        a05c2883d55c   4 days ago     101MB
+<none>                            <none>    dcddaa9d43a6   5 days ago     101MB
+classretheshreg.azurecr.io/busybox   latest    d3cd072556c2   6 days ago     1.24MB
+busybox                           latest    d3cd072556c2   6 days ago     1.24MB
+redis                             latest    bc8d70f9ef6c   11 days ago    105MB
+nginx                             latest    f0b8a9a54136   11 days ago    133MB
+ngnx                              develop   f0b8a9a54136   11 days ago    133MB
+ubuntu                            latest    7e0aa2d69a15   4 weeks ago    72.7MB
+hello-world                       latest    d1165f221234   2 months ago   13.3kB
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker build --build-arg GITBRANCH=develop -t testarg .
+Sending build context to Docker daemon  2.738MB
+Error response from daemon: dockerfile parse error line 37: unknown instruction: ECHO
+root@vagrant:~/projects/app1# pwd
+/root/projects/app1
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker build --build-arg GITBRANCH=develop -t testarg .
+Sending build context to Docker daemon  2.738MB
+Step 1/18 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/18 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/18 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/18 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/18 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/18 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/18 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/18 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/18 : WORKDIR /test
+ ---> Using cache
+ ---> 4b5db259a296
+Step 10/18 : RUN pwd
+ ---> Using cache
+ ---> a6d67afa441c
+Step 11/18 : RUN mkdir /new
+ ---> Using cache
+ ---> 588d9f0365c8
+Step 12/18 : WORKDIR /new
+ ---> Using cache
+ ---> 715c52f15f50
+Step 13/18 : RUN pwd
+ ---> Using cache
+ ---> a05c2883d55c
+Step 14/18 : RUN apt-get update -y
+ ---> Using cache
+ ---> 8dd14b54296e
+Step 15/18 : RUN apt install iputils-ping -y
+ ---> Using cache
+ ---> 55009a1488ad
+Step 16/18 : COPY file1 /var/tmp/
+ ---> Using cache
+ ---> 616923f92372
+Step 17/18 : ARG GITBRANCH
+ ---> Running in 160cf984998f
+Removing intermediate container 160cf984998f
+ ---> 4f7f4334c7ef
+Step 18/18 : RUN echo $GITBRANCH
+ ---> Running in 88ada9128ac4
+develop
+Removing intermediate container 88ada9128ac4
+ ---> ca824cbd6030
+Successfully built ca824cbd6030
+Successfully tagged testarg:latest
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker build --build-arg GITBRANCH=release/1.2.0-zaqwsx1 -t testarg .
+Sending build context to Docker daemon  2.738MB
+Step 1/18 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/18 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/18 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/18 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/18 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/18 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/18 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/18 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/18 : WORKDIR /test
+ ---> Using cache
+ ---> 4b5db259a296
+Step 10/18 : RUN pwd
+ ---> Using cache
+ ---> a6d67afa441c
+Step 11/18 : RUN mkdir /new
+ ---> Using cache
+ ---> 588d9f0365c8
+Step 12/18 : WORKDIR /new
+ ---> Using cache
+ ---> 715c52f15f50
+Step 13/18 : RUN pwd
+ ---> Using cache
+ ---> a05c2883d55c
+Step 14/18 : RUN apt-get update -y
+ ---> Using cache
+ ---> 8dd14b54296e
+Step 15/18 : RUN apt install iputils-ping -y
+ ---> Using cache
+ ---> 55009a1488ad
+Step 16/18 : COPY file1 /var/tmp/
+ ---> Using cache
+ ---> 616923f92372
+Step 17/18 : ARG GITBRANCH
+ ---> Using cache
+ ---> 4f7f4334c7ef
+Step 18/18 : RUN echo $GITBRANCH
+ ---> Running in d23d5dfc8344
+release/1.2.0-zaqwsx1
+Removing intermediate container d23d5dfc8344
+ ---> 42de4b66c0fe
+Successfully built 42de4b66c0fe
+Successfully tagged testarg:latest
+root@vagrant:~/projects/app1# docker build --build-arg GITBRANCH=release/1.2.0-zaqwsx1 -t testarg .
+root@vagrant:~/projects/app1# docker build --build-arg GITBRANCH=1.2.0 -t testarg .
+Sending build context to Docker daemon  2.738MB
+Step 1/18 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/18 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/18 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/18 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/18 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/18 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/18 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/18 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/18 : WORKDIR /test
+ ---> Using cache
+ ---> 4b5db259a296
+Step 10/18 : RUN pwd
+ ---> Using cache
+ ---> a6d67afa441c
+Step 11/18 : RUN mkdir /new
+ ---> Using cache
+ ---> 588d9f0365c8
+Step 12/18 : WORKDIR /new
+ ---> Using cache
+ ---> 715c52f15f50
+Step 13/18 : RUN pwd
+ ---> Using cache
+ ---> a05c2883d55c
+Step 14/18 : RUN apt-get update -y
+ ---> Using cache
+ ---> 8dd14b54296e
+Step 15/18 : RUN apt install iputils-ping -y
+ ---> Using cache
+ ---> 55009a1488ad
+Step 16/18 : COPY file1 /var/tmp/
+ ---> Using cache
+ ---> 616923f92372
+Step 17/18 : ARG GITBRANCH
+ ---> Using cache
+ ---> 4f7f4334c7ef
+Step 18/18 : RUN echo $GITBRANCH
+ ---> Running in fb74f18a27a6
+1.2.0
+Removing intermediate container fb74f18a27a6
+ ---> b90361f4e3e4
+Successfully built b90361f4e3e4
+Successfully tagged testarg:latest
+root@vagrant:~/projects/app1# docker build --build-arg GITBRANCH=1.2.0 -t testarg .
+root@vagrant:~/projects/app1# docker build --build-arg GITBRANCH=1.2.0 -t testargprod .
+Sending build context to Docker daemon  2.738MB
+Step 1/18 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/18 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/18 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/18 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/18 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/18 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/18 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/18 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/18 : WORKDIR /test
+ ---> Using cache
+ ---> 4b5db259a296
+Step 10/18 : RUN pwd
+ ---> Using cache
+ ---> a6d67afa441c
+Step 11/18 : RUN mkdir /new
+ ---> Using cache
+ ---> 588d9f0365c8
+Step 12/18 : WORKDIR /new
+ ---> Using cache
+ ---> 715c52f15f50
+Step 13/18 : RUN pwd
+ ---> Using cache
+ ---> a05c2883d55c
+Step 14/18 : RUN apt-get update -y
+ ---> Using cache
+ ---> 8dd14b54296e
+Step 15/18 : RUN apt install iputils-ping -y
+ ---> Using cache
+ ---> 55009a1488ad
+Step 16/18 : COPY file1 /var/tmp/
+ ---> Using cache
+ ---> 616923f92372
+Step 17/18 : ARG GITBRANCH
+ ---> Using cache
+ ---> 4f7f4334c7ef
+Step 18/18 : RUN echo $GITBRANCH
+ ---> Using cache
+ ---> b90361f4e3e4
+Successfully built b90361f4e3e4
+Successfully tagged testargprod:latest
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker run -d --name contarg testargprod
+f91c422bfd9fc8a41c18f8e9d707e842c9a8776518b0dcd7f0a5141a1090905e
+root@vagrant:~/projects/app1# docker exec -it contarg bash
+Error response from daemon: Container f91c422bfd9fc8a41c18f8e9d707e842c9a8776518b0dcd7f0a5141a1090905e is not running
+root@vagrant:~/projects/app1# docker run -d --name contarg1 testargprod sleep 200
+30c26097baeb05174cfeb07514709f98dc79f1ab67a613121df66f95cfa8e9cc
+root@vagrant:~/projects/app1# docker exec -it contarg1 bash
+root@30c26097baeb:/new# echo $GITBRANCH
+
+root@30c26097baeb:/new# exit
+exit
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# env
+LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+LESSCLOSE=/usr/bin/lesspipe %s %s
+LANG=en_US.UTF-8
+USER=root
+PWD=/root/projects/app1
+HOME=/root
+XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+MAIL=/var/mail/root
+SHELL=/bin/bash
+TERM=xterm
+SHLVL=1
+LANGUAGE=en_US:
+LOGNAME=root
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+LESSOPEN=| /usr/bin/lesspipe %s
+_=/usr/bin/env
+OLDPWD=/root/projects
+root@vagrant:~/projects/app1# env
+LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:
+LESSCLOSE=/usr/bin/lesspipe %s %s
+LANG=en_US.UTF-8
+USER=root
+PWD=/root/projects/app1
+HOME=/root
+XDG_DATA_DIRS=/usr/local/share:/usr/share:/var/lib/snapd/desktop
+MAIL=/var/mail/root
+SHELL=/bin/bash
+TERM=xterm
+SHLVL=1
+LANGUAGE=en_US:
+LOGNAME=root
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin
+LESSOPEN=| /usr/bin/lesspipe %s
+_=/usr/bin/env
+OLDPWD=/root/projects
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker build --build-arg GITBRANCH=1.2.0 -t testargprod .
+Sending build context to Docker daemon  2.738MB
+Step 1/19 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/19 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/19 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/19 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/19 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/19 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/19 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/19 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/19 : WORKDIR /test
+ ---> Using cache
+ ---> 4b5db259a296
+Step 10/19 : RUN pwd
+ ---> Using cache
+ ---> a6d67afa441c
+Step 11/19 : RUN mkdir /new
+ ---> Using cache
+ ---> 588d9f0365c8
+Step 12/19 : WORKDIR /new
+ ---> Using cache
+ ---> 715c52f15f50
+Step 13/19 : RUN pwd
+ ---> Using cache
+ ---> a05c2883d55c
+Step 14/19 : RUN apt-get update -y
+ ---> Using cache
+ ---> 8dd14b54296e
+Step 15/19 : RUN apt install iputils-ping -y
+ ---> Using cache
+ ---> 55009a1488ad
+Step 16/19 : COPY file1 /var/tmp/
+ ---> Using cache
+ ---> 616923f92372
+Step 17/19 : ARG GITBRANCH
+ ---> Using cache
+ ---> 4f7f4334c7ef
+Step 18/19 : RUN echo $GITBRANCH
+ ---> Using cache
+ ---> b90361f4e3e4
+Step 19/19 : ENV key1=value1
+ ---> Running in 21ba175f2fb9
+Removing intermediate container 21ba175f2fb9
+ ---> 557651fe7852
+Successfully built 557651fe7852
+Successfully tagged testargprod:latest
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker run -d --name contarg2 testargprod sleep 200
+d2d84614ec30c7b1548a6c75648434fe96e831b496ad9423a94153f872de6df1
+root@vagrant:~/projects/app1# docker exec -it contarg2 bash
+root@d2d84614ec30:/new# echo $key1
+value1
+root@d2d84614ec30:/new# exit
+exit
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker build --build-arg GITBRANCH=1.2.0 -t testargprod .
+Sending build context to Docker daemon  2.738MB
+Step 1/20 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/20 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/20 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/20 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/20 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/20 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/20 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/20 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/20 : WORKDIR /test
+ ---> Using cache
+ ---> 4b5db259a296
+Step 10/20 : RUN pwd
+ ---> Using cache
+ ---> a6d67afa441c
+Step 11/20 : RUN mkdir /new
+ ---> Using cache
+ ---> 588d9f0365c8
+Step 12/20 : WORKDIR /new
+ ---> Using cache
+ ---> 715c52f15f50
+Step 13/20 : RUN pwd
+ ---> Using cache
+ ---> a05c2883d55c
+Step 14/20 : RUN apt-get update -y
+ ---> Using cache
+ ---> 8dd14b54296e
+Step 15/20 : RUN apt install iputils-ping -y
+ ---> Using cache
+ ---> 55009a1488ad
+Step 16/20 : COPY file1 /var/tmp/
+ ---> Using cache
+ ---> 616923f92372
+Step 17/20 : ARG GITBRANCH
+ ---> Using cache
+ ---> 4f7f4334c7ef
+Step 18/20 : RUN echo $GITBRANCH
+ ---> Using cache
+ ---> b90361f4e3e4
+Step 19/20 : ENV key1=value1
+ ---> Using cache
+ ---> 557651fe7852
+Step 20/20 : ENV branch=$GITBRANCH
+ ---> Running in 6d1ed035dcd4
+Removing intermediate container 6d1ed035dcd4
+ ---> 71cd2800369c
+Successfully built 71cd2800369c
+Successfully tagged testargprod:latest
+root@vagrant:~/projects/app1# docker build --build-arg GITBRANCH=1.2.0 -t testargprod .
+root@vagrant:~/projects/app1# docker run -d --name contarg3 testargprod sleep 200
+275652d618b4161893a24045e566790b753b51d228b262bdbbd4c44b387d1ca0
+root@vagrant:~/projects/app1# docker exec -it contarg3 bash
+root@275652d618b4:/new# echo $branch
+1.2.0
+root@275652d618b4:/new#
+root@275652d618b4:/new# root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+root@vagrant:~/projects/app1# docker top
+"docker top" requires at least 1 argument.
+See 'docker top --help'.
+
+Usage:  docker top CONTAINER [ps OPTIONS]
+
+Display the running processes of a container
+root@vagrant:~/projects/app1# docker --help
+
+
+Usage:  docker [OPTIONS] COMMAND
+
+A self-sufficient runtime for containers
+
+Options:
+      --config string      Location of client config files (default "/root/.docker")
+  -c, --context string     Name of the context to use to connect to the daemon (overrides DOCKER_HOST env var and default
+                           context set with "docker context use")
+  -D, --debug              Enable debug mode
+  -H, --host list          Daemon socket(s) to connect to
+  -l, --log-level string   Set the logging level ("debug"|"info"|"warn"|"error"|"fatal") (default "info")
+      --tls                Use TLS; implied by --tlsverify
+      --tlscacert string   Trust certs signed only by this CA (default "/root/.docker/ca.pem")
+      --tlscert string     Path to TLS certificate file (default "/root/.docker/cert.pem")
+      --tlskey string      Path to TLS key file (default "/root/.docker/key.pem")
+      --tlsverify          Use TLS and verify the remote
+  -v, --version            Print version information and quit
+
+Management Commands:
+  app*        Docker App (Docker Inc., v0.9.1-beta3)
+  builder     Manage builds
+  buildx*     Build with BuildKit (Docker Inc., v0.5.1-docker)
+  config      Manage Docker configs
+  container   Manage containers
+  context     Manage contexts
+  image       Manage images
+  manifest    Manage Docker image manifests and manifest lists
+  network     Manage networks
+  node        Manage Swarm nodes
+  plugin      Manage plugins
+  secret      Manage Docker secrets
+  service     Manage services
+  stack       Manage Docker stacks
+  swarm       Manage Swarm
+  system      Manage Docker
+  trust       Manage trust on Docker images
+  volume      Manage volumes
+
+Commands:
+  attach      Attach local standard input, output, and error streams to a running container
+  build       Build an image from a Dockerfile
+  commit      Create a new image from a container's changes
+  cp          Copy files/folders between a container and the local filesystem
+  create      Create a new container
+  diff        Inspect changes to files or directories on a container's filesystem
+  events      Get real time events from the server
+  exec        Run a command in a running container
+  export      Export a container's filesystem as a tar archive
+  history     Show the history of an image
+  images      List images
+  import      Import the contents from a tarball to create a filesystem image
+  info        Display system-wide information
+  inspect     Return low-level information on Docker objects
+  kill        Kill one or more running containers
+  load        Load an image from a tar archive or STDIN
+  login       Log in to a Docker registry
+  logout      Log out from a Docker registry
+  logs        Fetch the logs of a container
+  pause       Pause all processes within one or more containers
+  port        List port mappings or a specific mapping for the container
+  ps          List containers
+  pull        Pull an image or a repository from a registry
+  push        Push an image or a repository to a registry
+  rename      Rename a container
+  restart     Restart one or more containers
+  rm          Remove one or more containers
+  rmi         Remove one or more images
+  run         Run a command in a new container
+  save        Save one or more images to a tar archive (streamed to STDOUT by default)
+  search      Search the Docker Hub for images
+  start       Start one or more stopped containers
+  stats       Display a live stream of container(s) resource usage statistics
+  stop        Stop one or more running containers
+  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+  top         Display the running processes of a container
+  unpause     Unpause all processes within one or more containers
+  update      Update configuration of one or more containers
+  version     Show the Docker version information
+  wait        Block until one or more containers stop, then print their exit codes
+
+Run 'docker COMMAND --help' for more information on a command.
+
+To get more help with docker, check out our guides at https://docs.docker.com/go/guides/
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker top --help
+
+Usage:  docker top CONTAINER [ps OPTIONS]
+
+Display the running processes of a container
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+root@vagrant:~/projects/app1# docker run -d nginx
+96362b89aafb87eaf72260f2021d16b79af226c23ba029e6176ba13f403cec2b
+root@vagrant:~/projects/app1# docker run -d busybox -- sleep 300
+8b905bdfd576ac4c533c17a0ab66f9f326c619795b17b9a335d31a71c93f69e4
+docker: Error response from daemon: OCI runtime create failed: container_linux.go:367: starting container process caused: exec: "--": executable file not found in $PATH: unknown.
+root@vagrant:~/projects/app1# docker run -d busybox:1.28  -- sleep 300
+Unable to find image 'busybox:1.28' locally
+1.28: Pulling from library/busybox
+07a152489297: Pull complete
+Digest: sha256:141c253bc4c3fd0a201d32dc1f493bcf3fff003b6df416dea4f41046e0f37d47
+Status: Downloaded newer image for busybox:1.28
+70258986a91d08dea98ad36b30e97c8211256c36aa09023f15dcaa0959e8f65a
+docker: Error response from daemon: OCI runtime create failed: container_linux.go:367: starting container process caused: exec: "--": executable file not found in $PATH: unknown.
+root@vagrant:~/projects/app1# docker run -d busybox:1.28 sleep 300
+5b52ab44c6ad43dc204ea4c42a80a60830d050a4453814418c851733a84431f6
+root@vagrant:~/projects/app1# docker top
+"docker top" requires at least 1 argument.
+See 'docker top --help'.
+
+Usage:  docker top CONTAINER [ps OPTIONS]
+
+Display the running processes of a container
+root@vagrant:~/projects/app1# docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED              STATUS              PORTS     NAMES
+5b52ab44c6ad   busybox:1.28   "sleep 300"              18 seconds ago       Up 17 seconds                 objective_tharp
+96362b89aafb   nginx          "/docker-entrypoint.…"   About a minute ago   Up About a minute   80/tcp    fervent_montalcini
+root@vagrant:~/projects/app1# docker top 5b52ab44c6ad
+UID                 PID                 PPID                C                   STIME               TTY                 TIME                CMD
+root                3443                3414                1                   02:37               ?                   00:00:00            sleep 300
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker stats 5b52ab44c6ad
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.01%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.01%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+CONTAINER ID   NAME              CPU %     MEM USAGE / LIMIT   MEM %     NET I/O     BLOCK I/O   PIDS
+5b52ab44c6ad   objective_tharp   0.00%     416KiB / 985.5MiB   0.04%     726B / 0B   0B / 0B     1
+^C
+root@vagrant:~/projects/app1# docker stats
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
+5b52ab44c6ad   objective_tharp      0.01%     416KiB / 985.5MiB     0.04%     796B / 0B     0B / 0B           1
+96362b89aafb   fervent_montalcini   0.00%     6.129MiB / 985.5MiB   0.62%     1.05kB / 0B   10.3MB / 8.19kB   2
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
+5b52ab44c6ad   objective_tharp      0.01%     416KiB / 985.5MiB     0.04%     796B / 0B     0B / 0B           1
+96362b89aafb   fervent_montalcini   0.00%     6.129MiB / 985.5MiB   0.62%     1.05kB / 0B   10.3MB / 8.19kB   2
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
+5b52ab44c6ad   objective_tharp      0.00%     416KiB / 985.5MiB     0.04%     796B / 0B     0B / 0B           1
+96362b89aafb   fervent_montalcini   0.00%     6.129MiB / 985.5MiB   0.62%     1.05kB / 0B   10.3MB / 8.19kB   2
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
+5b52ab44c6ad   objective_tharp      0.00%     416KiB / 985.5MiB     0.04%     796B / 0B     0B / 0B           1
+96362b89aafb   fervent_montalcini   0.00%     6.129MiB / 985.5MiB   0.62%     1.05kB / 0B   10.3MB / 8.19kB   2
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
+5b52ab44c6ad   objective_tharp      0.00%     416KiB / 985.5MiB     0.04%     796B / 0B     0B / 0B           1
+96362b89aafb   fervent_montalcini   0.00%     6.129MiB / 985.5MiB   0.62%     1.05kB / 0B   10.3MB / 8.19kB   2
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
+5b52ab44c6ad   objective_tharp      0.00%     416KiB / 985.5MiB     0.04%     796B / 0B     0B / 0B           1
+96362b89aafb   fervent_montalcini   0.00%     6.129MiB / 985.5MiB   0.62%     1.05kB / 0B   10.3MB / 8.19kB   2
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
+5b52ab44c6ad   objective_tharp      0.00%     416KiB / 985.5MiB     0.04%     796B / 0B     0B / 0B           1
+96362b89aafb   fervent_montalcini   0.00%     6.129MiB / 985.5MiB   0.62%     1.05kB / 0B   10.3MB / 8.19kB   2
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
+5b52ab44c6ad   objective_tharp      0.00%     416KiB / 985.5MiB     0.04%     796B / 0B     0B / 0B           1
+96362b89aafb   fervent_montalcini   0.00%     6.129MiB / 985.5MiB   0.62%     1.05kB / 0B   10.3MB / 8.19kB   2
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
+5b52ab44c6ad   objective_tharp      0.00%     416KiB / 985.5MiB     0.04%     796B / 0B     0B / 0B           1
+96362b89aafb   fervent_montalcini   0.00%     6.129MiB / 985.5MiB   0.62%     1.05kB / 0B   10.3MB / 8.19kB   2
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
+5b52ab44c6ad   objective_tharp      0.00%     416KiB / 985.5MiB     0.04%     796B / 0B     0B / 0B           1
+96362b89aafb   fervent_montalcini   0.00%     6.129MiB / 985.5MiB   0.62%     1.05kB / 0B   10.3MB / 8.19kB   2
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
+5b52ab44c6ad   objective_tharp      0.00%     416KiB / 985.5MiB     0.04%     796B / 0B     0B / 0B           1
+96362b89aafb   fervent_montalcini   0.00%     6.129MiB / 985.5MiB   0.62%     1.05kB / 0B   10.3MB / 8.19kB   2
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
+5b52ab44c6ad   objective_tharp      0.00%     416KiB / 985.5MiB     0.04%     796B / 0B     0B / 0B           1
+96362b89aafb   fervent_montalcini   0.00%     6.129MiB / 985.5MiB   0.62%     1.05kB / 0B   10.3MB / 8.19kB   2
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
+5b52ab44c6ad   objective_tharp      0.00%     416KiB / 985.5MiB     0.04%     796B / 0B     0B / 0B           1
+96362b89aafb   fervent_montalcini   0.00%     6.129MiB / 985.5MiB   0.62%     1.05kB / 0B   10.3MB / 8.19kB   2
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
+5b52ab44c6ad   objective_tharp      0.00%     416KiB / 985.5MiB     0.04%     796B / 0B     0B / 0B           1
+96362b89aafb   fervent_montalcini   0.00%     6.129MiB / 985.5MiB   0.62%     1.05kB / 0B   10.3MB / 8.19kB   2
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
+5b52ab44c6ad   objective_tharp      0.00%     416KiB / 985.5MiB     0.04%     796B / 0B     0B / 0B           1
+96362b89aafb   fervent_montalcini   0.00%     6.129MiB / 985.5MiB   0.62%     1.05kB / 0B   10.3MB / 8.19kB   2
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
+5b52ab44c6ad   objective_tharp      0.00%     416KiB / 985.5MiB     0.04%     796B / 0B     0B / 0B           1
+96362b89aafb   fervent_montalcini   0.00%     6.129MiB / 985.5MiB   0.62%     1.05kB / 0B   10.3MB / 8.19kB   2
+CONTAINER ID   NAME                 CPU %     MEM USAGE / LIMIT     MEM %     NET I/O       BLOCK I/O         PIDS
+5b52ab44c6ad   objective_tharp      0.00%     416KiB / 985.5MiB     0.04%     796B / 0B     0B / 0B           1
+96362b89aafb   fervent_montalcini   0.00%     6.129MiB / 985.5MiB   0.62%     1.05kB / 0B   10.3MB / 8.19kB   2
+^C
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker ps
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS         PORTS     NAMES
+5b52ab44c6ad   busybox:1.28   "sleep 300"              2 minutes ago   Up 2 minutes             objective_tharp
+96362b89aafb   nginx          "/docker-entrypoint.…"   3 minutes ago   Up 3 minutes   80/tcp    fervent_montalcini
+root@vagrant:~/projects/app1# docker log 5b52ab44c6ad
+docker: 'log' is not a docker command.
+See 'docker --help'
+root@vagrant:~/projects/app1# docker log --help
+
+Usage:  docker [OPTIONS] COMMAND
+
+A self-sufficient runtime for containers
+
+Options:
+      --config string      Location of client config files (default "/root/.docker")
+  -c, --context string     Name of the context to use to connect to the daemon (overrides DOCKER_HOST env var and default
+                           context set with "docker context use")
+  -D, --debug              Enable debug mode
+  -H, --host list          Daemon socket(s) to connect to
+  -l, --log-level string   Set the logging level ("debug"|"info"|"warn"|"error"|"fatal") (default "info")
+      --tls                Use TLS; implied by --tlsverify
+      --tlscacert string   Trust certs signed only by this CA (default "/root/.docker/ca.pem")
+      --tlscert string     Path to TLS certificate file (default "/root/.docker/cert.pem")
+      --tlskey string      Path to TLS key file (default "/root/.docker/key.pem")
+      --tlsverify          Use TLS and verify the remote
+  -v, --version            Print version information and quit
+
+Management Commands:
+  app*        Docker App (Docker Inc., v0.9.1-beta3)
+  builder     Manage builds
+  buildx*     Build with BuildKit (Docker Inc., v0.5.1-docker)
+  config      Manage Docker configs
+  container   Manage containers
+  context     Manage contexts
+  image       Manage images
+  manifest    Manage Docker image manifests and manifest lists
+  network     Manage networks
+  node        Manage Swarm nodes
+  plugin      Manage plugins
+  secret      Manage Docker secrets
+  service     Manage services
+  stack       Manage Docker stacks
+  swarm       Manage Swarm
+  system      Manage Docker
+  trust       Manage trust on Docker images
+  volume      Manage volumes
+
+Commands:
+  attach      Attach local standard input, output, and error streams to a running container
+  build       Build an image from a Dockerfile
+  commit      Create a new image from a container's changes
+  cp          Copy files/folders between a container and the local filesystem
+  create      Create a new container
+  diff        Inspect changes to files or directories on a container's filesystem
+  events      Get real time events from the server
+  exec        Run a command in a running container
+  export      Export a container's filesystem as a tar archive
+  history     Show the history of an image
+  images      List images
+  import      Import the contents from a tarball to create a filesystem image
+  info        Display system-wide information
+  inspect     Return low-level information on Docker objects
+  kill        Kill one or more running containers
+  load        Load an image from a tar archive or STDIN
+  login       Log in to a Docker registry
+  logout      Log out from a Docker registry
+  logs        Fetch the logs of a container
+  pause       Pause all processes within one or more containers
+  port        List port mappings or a specific mapping for the container
+  ps          List containers
+  pull        Pull an image or a repository from a registry
+  push        Push an image or a repository to a registry
+  rename      Rename a container
+  restart     Restart one or more containers
+  rm          Remove one or more containers
+  rmi         Remove one or more images
+  run         Run a command in a new container
+  save        Save one or more images to a tar archive (streamed to STDOUT by default)
+  search      Search the Docker Hub for images
+  start       Start one or more stopped containers
+  stats       Display a live stream of container(s) resource usage statistics
+  stop        Stop one or more running containers
+  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+  top         Display the running processes of a container
+  unpause     Unpause all processes within one or more containers
+  update      Update configuration of one or more containers
+  version     Show the Docker version information
+  wait        Block until one or more containers stop, then print their exit codes
+
+Run 'docker COMMAND --help' for more information on a command.
+
+To get more help with docker, check out our guides at https://docs.docker.com/go/guides/
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker logs 5b52ab44c6ad
+root@vagrant:~/projects/app1# docker logs -f 5b52ab44c6ad
+^C
+root@vagrant:~/projects/app1# cd ../
+root@vagrant:~/projects# sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100   633    0   633    0     0   1305      0 --:--:-- --:--:-- --:--:--  1302
+100 12.1M  100 12.1M    0     0  3730k      0  0:00:03  0:00:03 --:--:-- 5166k
+root@vagrant:~/projects# ls
+app1  app2  Dockerfile
+root@vagrant:~/projects# chmod +x /usr/local/bin/docker-compose
+root@vagrant:~/projects#
+root@vagrant:~/projects# docker-compose
+Define and run multi-container applications with Docker.
+
+Usage:
+  docker-compose [-f <arg>...] [--profile <name>...] [options] [--] [COMMAND] [ARGS...]
+  docker-compose -h|--help
+
+Options:
+  -f, --file FILE             Specify an alternate compose file
+                              (default: docker-compose.yml)
+  -p, --project-name NAME     Specify an alternate project name
+                              (default: directory name)
+  --profile NAME              Specify a profile to enable
+  -c, --context NAME          Specify a context name
+  --verbose                   Show more output
+  --log-level LEVEL           Set log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  --ansi (never|always|auto)  Control when to print ANSI control characters
+  --no-ansi                   Do not print ANSI control characters (DEPRECATED)
+  -v, --version               Print version and exit
+  -H, --host HOST             Daemon socket to connect to
+
+  --tls                       Use TLS; implied by --tlsverify
+  --tlscacert CA_PATH         Trust certs signed only by this CA
+  --tlscert CLIENT_CERT_PATH  Path to TLS certificate file
+  --tlskey TLS_KEY_PATH       Path to TLS key file
+  --tlsverify                 Use TLS and verify the remote
+  --skip-hostname-check       Don't check the daemon's hostname against the
+                              name specified in the client certificate
+  --project-directory PATH    Specify an alternate working directory
+                              (default: the path of the Compose file)
+  --compatibility             If set, Compose will attempt to convert keys
+                              in v3 files to their non-Swarm equivalent (DEPRECATED)
+  --env-file PATH             Specify an alternate environment file
+
+Commands:
+  build              Build or rebuild services
+  config             Validate and view the Compose file
+  create             Create services
+  down               Stop and remove resources
+  events             Receive real time events from containers
+  exec               Execute a command in a running container
+  help               Get help on a command
+  images             List images
+  kill               Kill containers
+  logs               View output from containers
+  pause              Pause services
+  port               Print the public port for a port binding
+  ps                 List containers
+  pull               Pull service images
+  push               Push service images
+  restart            Restart services
+  rm                 Remove stopped containers
+  run                Run a one-off command
+  scale              Set number of containers for a service
+  start              Start services
+  stop               Stop services
+  top                Display the running processes
+  unpause            Unpause services
+  up                 Create and start containers
+  version            Show version information and quit
+root@vagrant:~/projects#
+root@vagrant:~/projects# docker
+
+Usage:  docker [OPTIONS] COMMAND
+
+A self-sufficient runtime for containers
+
+Options:
+      --config string      Location of client config files (default "/root/.docker")
+  -c, --context string     Name of the context to use to connect to the daemon (overrides DOCKER_HOST env var and default
+                           context set with "docker context use")
+  -D, --debug              Enable debug mode
+  -H, --host list          Daemon socket(s) to connect to
+  -l, --log-level string   Set the logging level ("debug"|"info"|"warn"|"error"|"fatal") (default "info")
+      --tls                Use TLS; implied by --tlsverify
+      --tlscacert string   Trust certs signed only by this CA (default "/root/.docker/ca.pem")
+      --tlscert string     Path to TLS certificate file (default "/root/.docker/cert.pem")
+      --tlskey string      Path to TLS key file (default "/root/.docker/key.pem")
+      --tlsverify          Use TLS and verify the remote
+  -v, --version            Print version information and quit
+
+Management Commands:
+  app*        Docker App (Docker Inc., v0.9.1-beta3)
+  builder     Manage builds
+  buildx*     Build with BuildKit (Docker Inc., v0.5.1-docker)
+  config      Manage Docker configs
+  container   Manage containers
+  context     Manage contexts
+  image       Manage images
+  manifest    Manage Docker image manifests and manifest lists
+  network     Manage networks
+  node        Manage Swarm nodes
+  plugin      Manage plugins
+  secret      Manage Docker secrets
+  service     Manage services
+  stack       Manage Docker stacks
+  swarm       Manage Swarm
+  system      Manage Docker
+  trust       Manage trust on Docker images
+  volume      Manage volumes
+
+Commands:
+  attach      Attach local standard input, output, and error streams to a running container
+  build       Build an image from a Dockerfile
+  commit      Create a new image from a container's changes
+  cp          Copy files/folders between a container and the local filesystem
+  create      Create a new container
+  diff        Inspect changes to files or directories on a container's filesystem
+  events      Get real time events from the server
+  exec        Run a command in a running container
+  export      Export a container's filesystem as a tar archive
+  history     Show the history of an image
+  images      List images
+  import      Import the contents from a tarball to create a filesystem image
+  info        Display system-wide information
+  inspect     Return low-level information on Docker objects
+  kill        Kill one or more running containers
+  load        Load an image from a tar archive or STDIN
+  login       Log in to a Docker registry
+  logout      Log out from a Docker registry
+  logs        Fetch the logs of a container
+  pause       Pause all processes within one or more containers
+  port        List port mappings or a specific mapping for the container
+  ps          List containers
+  pull        Pull an image or a repository from a registry
+  push        Push an image or a repository to a registry
+  rename      Rename a container
+  restart     Restart one or more containers
+  rm          Remove one or more containers
+  rmi         Remove one or more images
+  run         Run a command in a new container
+  save        Save one or more images to a tar archive (streamed to STDOUT by default)
+  search      Search the Docker Hub for images
+  start       Start one or more stopped containers
+  stats       Display a live stream of container(s) resource usage statistics
+  stop        Stop one or more running containers
+  tag         Create a tag TARGET_IMAGE that refers to SOURCE_IMAGE
+  top         Display the running processes of a container
+  unpause     Unpause all processes within one or more containers
+  update      Update configuration of one or more containers
+  version     Show the Docker version information
+  wait        Block until one or more containers stop, then print their exit codes
+
+Run 'docker COMMAND --help' for more information on a command.
+
+To get more help with docker, check out our guides at https://docs.docker.com/go/guides/
+root@vagrant:~/projects#
+root@vagrant:~/projects# docker-compose
+Define and run multi-container applications with Docker.
+
+Usage:
+  docker-compose [-f <arg>...] [--profile <name>...] [options] [--] [COMMAND] [ARGS...]
+  docker-compose -h|--help
+
+Options:
+  -f, --file FILE             Specify an alternate compose file
+                              (default: docker-compose.yml)
+  -p, --project-name NAME     Specify an alternate project name
+                              (default: directory name)
+  --profile NAME              Specify a profile to enable
+  -c, --context NAME          Specify a context name
+  --verbose                   Show more output
+  --log-level LEVEL           Set log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+  --ansi (never|always|auto)  Control when to print ANSI control characters
+  --no-ansi                   Do not print ANSI control characters (DEPRECATED)
+  -v, --version               Print version and exit
+  -H, --host HOST             Daemon socket to connect to
+
+  --tls                       Use TLS; implied by --tlsverify
+  --tlscacert CA_PATH         Trust certs signed only by this CA
+  --tlscert CLIENT_CERT_PATH  Path to TLS certificate file
+  --tlskey TLS_KEY_PATH       Path to TLS key file
+  --tlsverify                 Use TLS and verify the remote
+  --skip-hostname-check       Don't check the daemon's hostname against the
+                              name specified in the client certificate
+  --project-directory PATH    Specify an alternate working directory
+                              (default: the path of the Compose file)
+  --compatibility             If set, Compose will attempt to convert keys
+                              in v3 files to their non-Swarm equivalent (DEPRECATED)
+  --env-file PATH             Specify an alternate environment file
+
+Commands:
+  build              Build or rebuild services
+  config             Validate and view the Compose file
+  create             Create services
+  down               Stop and remove resources
+  events             Receive real time events from containers
+  exec               Execute a command in a running container
+  help               Get help on a command
+  images             List images
+  kill               Kill containers
+  logs               View output from containers
+  pause              Pause services
+  port               Print the public port for a port binding
+  ps                 List containers
+  pull               Pull service images
+  push               Push service images
+  restart            Restart services
+  rm                 Remove stopped containers
+  run                Run a one-off command
+  scale              Set number of containers for a service
+  start              Start services
+  stop               Stop services
+  top                Display the running processes
+  unpause            Unpause services
+  up                 Create and start containers
+  version            Show version information and quit
+root@vagrant:~/projects#
+root@vagrant:~/projects# mkdir new
+root@vagrant:~/projects# cd new
+root@vagrant:~/projects/new# vi Dockerfile
+root@vagrant:~/projects/new# vi docker-compose.yml
+root@vagrant:~/projects/new# docker-compose up -d
+Creating network "new_default" with the default driver
+Creating volume "new_logvolume01" with default driver
+Building web
+Sending build context to Docker daemon  3.072kB
+Step 1/1 : FROM nginx
+ ---> f0b8a9a54136
+Successfully built f0b8a9a54136
+Successfully tagged new_web:latest
+WARNING: Image for service web was built because it did not already exist. To rebuild this image you must use `docker-compose build` or `docker-compose up --build`.
+Creating new_redis_1 ... done
+Creating new_web_1   ... done
+root@vagrant:~/projects/new# docker-compose ps
+   Name                  Command               State                        Ports
+-------------------------------------------------------------------------------------------------------
+new_redis_1   docker-entrypoint.sh redis ...   Up      6379/tcp
+new_web_1     /docker-entrypoint.sh ngin ...   Up      0.0.0.0:5000->5000/tcp,:::5000->5000/tcp, 80/tcp
+root@vagrant:~/projects/new# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS                                               NAMES
+a0d552674db4   new_web   "/docker-entrypoint.…"   49 seconds ago   Up 46 seconds   80/tcp, 0.0.0.0:5000->5000/tcp, :::5000->5000/tcp   new_web_1
+001e11c2ee7a   redis     "docker-entrypoint.s…"   52 seconds ago   Up 49 seconds   6379/tcp                                            new_redis_1
+96362b89aafb   nginx     "/docker-entrypoint.…"   21 minutes ago   Up 21 minutes   80/tcp                                              fervent_montalcini
+root@vagrant:~/projects/new#
+root@vagrant:~/projects/new# docker-compose scale --help
+Set number of containers to run for a service.
+
+Numbers are specified in the form `service=num` as arguments.
+For example:
+
+    $ docker-compose scale web=2 worker=3
+
+This command is deprecated. Use the up command with the `--scale` flag
+instead.
+
+Usage: scale [options] [SERVICE=NUM...]
+
+Options:
+  -t, --timeout TIMEOUT      Specify a shutdown timeout in seconds.
+                             (default: 10)
+root@vagrant:~/projects/new# docker-compose scale new_web_1=3
+WARNING: The scale command is deprecated. Use the up command with the --scale flag instead.
+ERROR: No such service: new_web_1
+root@vagrant:~/projects/new# docker-compose scale web_1=3
+WARNING: The scale command is deprecated. Use the up command with the --scale flag instead.
+ERROR: No such service: web_1
+root@vagrant:~/projects/new# docker-compose scale web=3
+WARNING: The scale command is deprecated. Use the up command with the --scale flag instead.
+WARNING: The "web" service specifies a port on the host. If multiple containers for this service are created on a single host, the port will clash.
+Creating new_web_2 ...
+Creating new_web_3 ...
+Creating new_web_2 ... error
+WARNING: Host is already in use by another container
+
+ERROR: for new_web_3  Cannot start service web: driver failed programming external connectivity on endpoint new_web_3 (c48c80bace8444b922dc4acdb26854b798c37ff020948b8fb925de22a2368522): Bind for 0.0.0.0:5000 failed: port is already allocated
+
+ERROR: for new_web_2  Cannot start service web: driver failed programming external connectivity on endpoint new_web_2 (53b2791641d1a8ba290ad1e78ad298c7b9b3d015c9b069608697000ef4487659): Bind for 0.0.0.0:5000 failed: port is already allocated
+ERROR: Cannot start service web: driver failed programming external connectivity on endpoint new_web_3 (c48c80bace8444b922dc4acdb26854b798c37ff020948b8fb925de22a2368522): Bind for 0.0.0.0:5000 failed: port is already allocated
+root@vagrant:~/projects/new#
+root@vagrant:~/projects/new# docker-compose ps
+   Name                  Command                State                          Ports
+----------------------------------------------------------------------------------------------------------
+new_redis_1   docker-entrypoint.sh redis ...   Up         6379/tcp
+new_web_1     /docker-entrypoint.sh ngin ...   Up         0.0.0.0:5000->5000/tcp,:::5000->5000/tcp, 80/tcp
+new_web_2     /docker-entrypoint.sh ngin ...   Exit 128
+new_web_3     /docker-entrypoint.sh ngin ...   Exit 128
+root@vagrant:~/projects/new# cd ../
+root@vagrant:~/projects# ls
+app1  app2  Dockerfile  new
+root@vagrant:~/projects# mkdir app3
+root@vagrant:~/projects# cd app3
+root@vagrant:~/projects/app3# vi Dockerfile
+root@vagrant:~/projects/app3# docker build -t mcon .
+Sending build context to Docker daemon  2.048kB
+Step 1/5 : FROM golang:latest as builder
+latest: Pulling from library/golang
+d960726af2be: Pull complete
+e8d62473a22d: Pull complete
+8962bc0fad55: Pull complete
+65d943ee54c1: Pull complete
+f2253e6fbefa: Pull complete
+6d7fa7c7d5d3: Pull complete
+e2e442f7f89f: Pull complete
+Digest: sha256:6f0b0a314b158ff6caf8f12d7f6f3a966500ec6afb533e986eca7375e2f7560f
+Status: Downloaded newer image for golang:latest
+ ---> 96129f3766cf
+Step 2/5 : WORKDIR /go-http-hello-world/
+ ---> Running in 03e5e9d91aa7
+Removing intermediate container 03e5e9d91aa7
+ ---> c7c725176a66
+Step 3/5 : RUN go get -d -v golang.org/x/net/html
+ ---> Running in 9aad6997b007
+go: downloading golang.org/x/net v0.0.0-20210521195947-fe42d452be8f
+Removing intermediate container 9aad6997b007
+ ---> 155e3f4d7285
+Step 4/5 : ADD https://raw.githubusercontent.com/geetarista/go-http-hello-world/master/hello_world/hello_world.go ./hello_world.go
+Downloading     393B
+ ---> c390fd60b2e7
+Step 5/5 : RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
+ ---> Running in 0a2469978bde
+go: go.mod file not found in current directory or any parent directory; see 'go help modules'
+The command '/bin/sh -c CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .' returned a non-zero code: 1
+root@vagrant:~/projects/app3# vi Dockerfile
+root@vagrant:~/projects/app3# docker build -t mcon .
+Sending build context to Docker daemon  2.048kB
+Error response from daemon: dockerfile parse error line 1: FROM requires either one or three arguments
+root@vagrant:~/projects/app3#
+root@vagrant:~/projects/app3# vi Dockerfile
+root@vagrant:~/projects/app3# vi Dockerfile
+root@vagrant:~/projects/app3# docker build -t mcon .
+Sending build context to Docker daemon  2.048kB
+Step 1/5 : FROM golang:1.15.0 as builder
+1.15.0: Pulling from library/golang
+d6ff36c9ec48: Pull complete
+c958d65b3090: Pull complete
+edaf0a6b092f: Pull complete
+80931cf68816: Pull complete
+813643441356: Pull complete
+b5bb03b86155: Pull complete
+794441282297: Pull complete
+Digest: sha256:4afdc8ea330492631e6c0b46ba04ba985e8ff494431124816aac1bc1b18ff1ce
+Status: Downloaded newer image for golang:1.15.0
+ ---> 166f2b5fae2d
+Step 2/5 : WORKDIR /go-http-hello-world/
+ ---> Running in b4628eccddd3
+Removing intermediate container b4628eccddd3
+ ---> bd1859a65d13
+Step 3/5 : RUN go get -d -v golang.org/x/net/html
+ ---> Running in b9e39949361a
+get "golang.org/x/net/html": found meta tag get.metaImport{Prefix:"golang.org/x/net", VCS:"git", RepoRoot:"https://go.googlesource.com/net"} at //golang.org/x/net/html?go-get=1
+get "golang.org/x/net/html": verifying non-authoritative meta tag
+golang.org/x/net (download)
+Removing intermediate container b9e39949361a
+ ---> 837a6e16401a
+Step 4/5 : ADD https://raw.githubusercontent.com/geetarista/go-http-hello-world/master/hello_world/hello_world.go ./hello_world.go
+Downloading     393B
+ ---> d3850c5a8341
+Step 5/5 : RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
+ ---> Running in 7d35c521bc93
+Removing intermediate container 7d35c521bc93
+ ---> 5fed7c3fafe9
+Successfully built 5fed7c3fafe9
+Successfully tagged mcon:latest
+root@vagrant:~/projects/app3#
+root@vagrant:~/projects/app3# docker image ls
+REPOSITORY                        TAG       IMAGE ID       CREATED             SIZE
+mcon                              latest    5fed7c3fafe9   38 seconds ago      898MB
+<none>                            <none>    c390fd60b2e7   7 minutes ago       869MB
+testargprod                       latest    71cd2800369c   58 minutes ago      110MB
+testarg                           latest    b90361f4e3e4   About an hour ago   110MB
+<none>                            <none>    42de4b66c0fe   About an hour ago   110MB
+<none>                            <none>    ca824cbd6030   About an hour ago   110MB
+app2                              v1        8c1a9ed5bed0   4 days ago          73MB
+test                              v3        9d2edc631a78   4 days ago          110MB
+<none>                            <none>    9c4d46dbae99   4 days ago          101MB
+test                              v2        4c42757d8fd8   4 days ago          101MB
+test                              v1        4a34d07a1a92   4 days ago          101MB
+base                              v2        611dc4643fd0   5 days ago          104MB
+new                               v2        9cc576452e43   5 days ago          104MB
+<none>                            <none>    b244d381b6f2   5 days ago          112MB
+<none>                            <none>    07f275f0d9e6   5 days ago          104MB
+<none>                            <none>    3900c466da4b   5 days ago          101MB
+<none>                            <none>    360193fe7e80   5 days ago          101MB
+base1                             v4        a05c2883d55c   5 days ago          101MB
+<none>                            <none>    dcddaa9d43a6   5 days ago          101MB
+busybox                           latest    d3cd072556c2   6 days ago          1.24MB
+classretheshreg.azurecr.io/busybox   latest    d3cd072556c2   6 days ago          1.24MB
+golang                            latest    96129f3766cf   11 days ago         862MB
+redis                             latest    bc8d70f9ef6c   11 days ago         105MB
+nginx                             latest    f0b8a9a54136   11 days ago         133MB
+ngnx                              develop   f0b8a9a54136   11 days ago         133MB
+new_web                           latest    f0b8a9a54136   11 days ago         133MB
+ubuntu                            latest    7e0aa2d69a15   4 weeks ago         72.7MB
+hello-world                       latest    d1165f221234   2 months ago        13.3kB
+golang                            1.15.0    166f2b5fae2d   8 months ago        839MB
+busybox                           1.28      8c811b4aec35   3 years ago         1.15MB
+root@vagrant:~/projects/app3# vi Dockerfile
+root@vagrant:~/projects/app3# docker build -t mcon1 .
+Sending build context to Docker daemon  2.048kB
+Step 1/8 : FROM golang:1.15.0 as builder
+ ---> 166f2b5fae2d
+Step 2/8 : WORKDIR /go-http-hello-world/
+ ---> Using cache
+ ---> bd1859a65d13
+Step 3/8 : RUN go get -d -v golang.org/x/net/html
+ ---> Using cache
+ ---> 837a6e16401a
+Step 4/8 : ADD https://raw.githubusercontent.com/geetarista/go-http-hello-world/master/hello_world/hello_world.go ./hello_world.go
+Downloading     393B
+ ---> Using cache
+ ---> d3850c5a8341
+Step 5/8 : RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o app .
+ ---> Using cache
+ ---> 5fed7c3fafe9
+Step 6/8 : FROM scratch
+ --->
+Step 7/8 : COPY --from=builder /go-http-hello-world/app .
+ ---> 11f565d3841a
+Step 8/8 : CMD ["./app"]
+ ---> Running in bcbeb4d5aeea
+Removing intermediate container bcbeb4d5aeea
+ ---> 50c1a7a41337
+Successfully built 50c1a7a41337
+Successfully tagged mcon1:latest
+root@vagrant:~/projects/app3#
+root@vagrant:~/projects/app3# docker image ls
+REPOSITORY                        TAG       IMAGE ID       CREATED             SIZE
+mcon1                             latest    50c1a7a41337   6 seconds ago       6.39MB
+mcon                              latest    5fed7c3fafe9   3 minutes ago       898MB
+<none>                            <none>    c390fd60b2e7   10 minutes ago      869MB
+testargprod                       latest    71cd2800369c   About an hour ago   110MB
+testarg                           latest    b90361f4e3e4   About an hour ago   110MB
+<none>                            <none>    42de4b66c0fe   About an hour ago   110MB
+<none>                            <none>    ca824cbd6030   About an hour ago   110MB
+app2                              v1        8c1a9ed5bed0   4 days ago          73MB
+test                              v3        9d2edc631a78   4 days ago          110MB
+<none>                            <none>    9c4d46dbae99   4 days ago          101MB
+test                              v2        4c42757d8fd8   4 days ago          101MB
+test                              v1        4a34d07a1a92   4 days ago          101MB
+base                              v2        611dc4643fd0   5 days ago          104MB
+new                               v2        9cc576452e43   5 days ago          104MB
+<none>                            <none>    b244d381b6f2   5 days ago          112MB
+<none>                            <none>    07f275f0d9e6   5 days ago          104MB
+<none>                            <none>    3900c466da4b   5 days ago          101MB
+<none>                            <none>    360193fe7e80   5 days ago          101MB
+base1                             v4        a05c2883d55c   5 days ago          101MB
+<none>                            <none>    dcddaa9d43a6   5 days ago          101MB
+classretheshreg.azurecr.io/busybox   latest    d3cd072556c2   6 days ago          1.24MB
+busybox                           latest    d3cd072556c2   6 days ago          1.24MB
+golang                            latest    96129f3766cf   11 days ago         862MB
+redis                             latest    bc8d70f9ef6c   11 days ago         105MB
+new_web                           latest    f0b8a9a54136   11 days ago         133MB
+nginx                             latest    f0b8a9a54136   11 days ago         133MB
+ngnx                              develop   f0b8a9a54136   11 days ago         133MB
+ubuntu                            latest    7e0aa2d69a15   4 weeks ago         72.7MB
+hello-world                       latest    d1165f221234   2 months ago        13.3kB
+golang                            1.15.0    166f2b5fae2d   8 months ago        839MB
+busybox                           1.28      8c811b4aec35   3 years ago         1.15MB
+root@vagrant:~/projects/app3#

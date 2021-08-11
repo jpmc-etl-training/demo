@@ -1,0 +1,1185 @@
+login as: vagrant
+Authenticating with public key "imported-openssh-key"
+Welcome to Ubuntu 18.04.3 LTS (GNU/Linux 4.15.0-72-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Thu May 20 02:05:03 UTC 2021
+
+  System load:  0.0               Processes:              124
+  Usage of /:   3.9% of 61.80GB   Users logged in:        1
+  Memory usage: 24%               IP address for eth0:    10.0.2.15
+  Swap usage:   0%                IP address for docker0: 172.17.0.1
+
+ * Pure upstream Kubernetes 1.21, smallest, simplest cluster ops!
+
+     https://microk8s.io/
+
+218 packages can be updated.
+165 updates are security updates.
+
+
+
+This system is built by the Bento project by Chef Software
+More information can be found at https://github.com/chef/bento
+Last login: Wed May 19 02:32:44 2021 from 10.0.2.2
+vagrant@vagrant:~$ sudo su -
+root@vagrant:~#
+root@vagrant:~# ls
+get-docker.sh  projects
+root@vagrant:~# cd projects/
+root@vagrant:~/projects# cd app1/
+root@vagrant:~/projects/app1# ls
+Dockerfile  file1  files  putty-0.75.tar.gz
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docler images
+-su: docler: command not found
+root@vagrant:~/projects/app1# docker images
+REPOSITORY                        TAG       IMAGE ID       CREATED        SIZE
+base                              v2        611dc4643fd0   23 hours ago   104MB
+new                               v2        9cc576452e43   23 hours ago   104MB
+<none>                            <none>    b244d381b6f2   23 hours ago   112MB
+<none>                            <none>    07f275f0d9e6   23 hours ago   104MB
+<none>                            <none>    3900c466da4b   23 hours ago   101MB
+<none>                            <none>    360193fe7e80   23 hours ago   101MB
+base1                             v4        a05c2883d55c   23 hours ago   101MB
+<none>                            <none>    dcddaa9d43a6   23 hours ago   101MB
+classretheshreg.azurecr.io/busybox   latest    d3cd072556c2   2 days ago     1.24MB
+busybox                           latest    d3cd072556c2   2 days ago     1.24MB
+redis                             latest    bc8d70f9ef6c   7 days ago     105MB
+nginx                             latest    f0b8a9a54136   7 days ago     133MB
+ngnx                              develop   f0b8a9a54136   7 days ago     133MB
+ubuntu                            latest    7e0aa2d69a15   3 weeks ago    72.7MB
+hello-world                       latest    d1165f221234   2 months ago   13.3kB
+root@vagrant:~/projects/app1# docker build -t test:v1 .
+Sending build context to Docker daemon  2.737MB
+Step 1/15 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/15 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/15 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/15 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/15 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/15 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/15 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/15 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/15 : WORKDIR /test
+ ---> Using cache
+ ---> 4b5db259a296
+Step 10/15 : RUN pwd
+ ---> Using cache
+ ---> a6d67afa441c
+Step 11/15 : RUN mkdir /new
+ ---> Using cache
+ ---> 588d9f0365c8
+Step 12/15 : WORKDIR /new
+ ---> Using cache
+ ---> 715c52f15f50
+Step 13/15 : RUN pwd
+ ---> Using cache
+ ---> a05c2883d55c
+Step 14/15 : COPY file1 /var/tmp/
+ ---> 906aa39ea6a4
+Step 15/15 : CMD cat /var/tmp/file1
+ ---> Running in 5122414175e4
+Removing intermediate container 5122414175e4
+ ---> 4a34d07a1a92
+Successfully built 4a34d07a1a92
+Successfully tagged test:v1
+root@vagrant:~/projects/app1# docker image ls
+REPOSITORY                        TAG       IMAGE ID       CREATED         SIZE
+test                              v1        4a34d07a1a92   6 seconds ago   101MB
+base                              v2        611dc4643fd0   23 hours ago    104MB
+new                               v2        9cc576452e43   23 hours ago    104MB
+<none>                            <none>    b244d381b6f2   23 hours ago    112MB
+<none>                            <none>    07f275f0d9e6   23 hours ago    104MB
+<none>                            <none>    3900c466da4b   23 hours ago    101MB
+<none>                            <none>    360193fe7e80   23 hours ago    101MB
+base1                             v4        a05c2883d55c   23 hours ago    101MB
+<none>                            <none>    dcddaa9d43a6   24 hours ago    101MB
+classretheshreg.azurecr.io/busybox   latest    d3cd072556c2   2 days ago      1.24MB
+busybox                           latest    d3cd072556c2   2 days ago      1.24MB
+redis                             latest    bc8d70f9ef6c   7 days ago      105MB
+nginx                             latest    f0b8a9a54136   7 days ago      133MB
+ngnx                              develop   f0b8a9a54136   7 days ago      133MB
+ubuntu                            latest    7e0aa2d69a15   3 weeks ago     72.7MB
+hello-world                       latest    d1165f221234   2 months ago    13.3kB
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker run --name con1 test:v1
+Hello This is fro docker file
+root@vagrant:~/projects/app1# cat Dockerfile
+FROM ubuntu:latest
+
+LABEL maintainer="retheshnair"
+LABEL email="retheshnair@gmail.com"
+LABEL Team="DevOps team"
+
+RUN apt-get update -y
+RUN mkdir test
+RUN cd test && pwd
+RUN pwd
+
+WORKDIR /test
+RUN pwd
+
+RUN mkdir /new
+
+WORKDIR /new
+RUN pwd
+
+
+COPY file1 /var/tmp/
+#COPY files/test1 /var/tmp
+#ADD file1 /var/tmp
+#COPY putty-0.75.tar.gz /var/tmp/
+#ADD putty-0.75.tar.gz /var/tmp/
+
+#ADD https://the.earth.li/~sgtatham/putty/latest/putty-0.75.tar.gz /var/tmp
+
+CMD cat /var/tmp/file1
+root@vagrant:~/projects/app1# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED      STATUS      PORTS     NAMES
+8449eea16e82   nginx     "/docker-entrypoint.…"   2 days ago   Up 2 days   80/tcp    stoic_bell
+root@vagrant:~/projects/app1# docker ps -a
+CONTAINER ID   IMAGE          COMMAND                  CREATED              STATUS                      PORTS     NAMES
+bc570973d760   test:v1        "/bin/sh -c 'cat /va…"   About a minute ago   Exited (0) 58 seconds ago             con1
+5e462ae420e1   new:v2         "sleep 200"              23 hours ago         Exited (0) 23 hours ago               app6
+a7c21367b1d4   b244d381b6f2   "sleep 200"              23 hours ago         Exited (0) 23 hours ago               app5
+52055f919d3e   07f275f0d9e6   "sleep 200"              23 hours ago         Exited (0) 23 hours ago               app4
+34792b439688   3900c466da4b   "sleep 200"              23 hours ago         Exited (0) 23 hours ago               app3
+458caa5f1d1b   360193fe7e80   "sleep 200"              23 hours ago         Exited (0) 23 hours ago               app2
+f8557caf13d4   hello-world    "/hello"                 24 hours ago         Exited (0) 24 hours ago               jovial_robinson
+44ee5b0b73bd   hello-world    "/hello"                 47 hours ago         Exited (0) 47 hours ago               festive_jang
+8449eea16e82   nginx          "/docker-entrypoint.…"   2 days ago           Up 2 days                   80/tcp    stoic_bell
+e09595d47583   nginx          "/docker-entrypoint.…"   2 days ago           Exited (0) 2 days ago                 objective_hoover
+root@vagrant:~/projects/app1# docker ps -a --no-trunc
+CONTAINER ID                                                       IMAGE                                                                     COMMAND                                          CREATED              STATUS                          PORTS     NAMES
+bc570973d760643a3cb364748629a5c5fe0aa6e6cc506f913c44f0cfa6dbffcc   test:v1                                                                   "/bin/sh -c 'cat /var/tmp/file1'"                About a minute ago   Exited (0) About a minute ago             con1
+5e462ae420e1d6cb4a07696e4a1f3504b441d5c9ed092dc0e71cbe21d730816e   new:v2                                                                    "sleep 200"                                      23 hours ago         Exited (0) 23 hours ago                   app6
+a7c21367b1d44ec1ca371797e6f60a5be085f38c07a520b56a68c64b089149d1   sha256:b244d381b6f2a555160fb5b3ec355b5a69111ec971c4ce95769d2467e77c1058   "sleep 200"                                      23 hours ago         Exited (0) 23 hours ago                   app5
+52055f919d3ef044f9cea4ffc8cb1bc74574fac2f54022bf8c78b6259bab6d93   sha256:07f275f0d9e6858f65fec0977f99ab90798a5ace3e485bd289b10a5fb855a14a   "sleep 200"                                      23 hours ago         Exited (0) 23 hours ago                   app4
+34792b43968813c42595b9aec4faec645f87c18f4ef6a86351d3f9a44694ac92   sha256:3900c466da4bba4a332c7c4a50cb22f10745b84e829275bc5a7b23d18fb381c1   "sleep 200"                                      23 hours ago         Exited (0) 23 hours ago                   app3
+458caa5f1d1b1240c84c9cdcc5cee873696f200c22beb13b66a1138593261f6a   sha256:360193fe7e80926afe79f5b4fe181ddbd4d56866c1e39e8f017ed7acd2290e72   "sleep 200"                                      23 hours ago         Exited (0) 23 hours ago                   app2
+f8557caf13d4ec32031260b6564ff1387511d0e8cc1f536144ec17db6ff68cff   hello-world                                                               "/hello"                                         24 hours ago         Exited (0) 24 hours ago                   jovial_robinson
+44ee5b0b73bd67ae071d6f77b977578b8d7c2163970539034788459e70dd08b5   hello-world                                                               "/hello"                                         47 hours ago         Exited (0) 47 hours ago                   festive_jang
+8449eea16e828184b84604442a0c6bc6df69ce6f391d70ec5bf55539f2a1927c   nginx                                                                     "/docker-entrypoint.sh nginx -g 'daemon off;'"   2 days ago           Up 2 days                       80/tcp    stoic_bell
+e09595d47583b717e296364d08b2c2dd2b72aa7b693f069be05939afb93c5100   nginx                                                                     "/docker-entrypoint.sh nginx -g 'daemon off;'"   2 days ago           Exited (0) 2 days ago                     objective_hoover
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker ps -a
+CONTAINER ID   IMAGE          COMMAND                  CREATED              STATUS                          PORTS     NAMES
+bc570973d760   test:v1        "/bin/sh -c 'cat /va…"   About a minute ago   Exited (0) About a minute ago             con1
+5e462ae420e1   new:v2         "sleep 200"              23 hours ago         Exited (0) 23 hours ago                   app6
+a7c21367b1d4   b244d381b6f2   "sleep 200"              23 hours ago         Exited (0) 23 hours ago                   app5
+52055f919d3e   07f275f0d9e6   "sleep 200"              23 hours ago         Exited (0) 23 hours ago                   app4
+34792b439688   3900c466da4b   "sleep 200"              23 hours ago         Exited (0) 23 hours ago                   app3
+458caa5f1d1b   360193fe7e80   "sleep 200"              23 hours ago         Exited (0) 23 hours ago                   app2
+f8557caf13d4   hello-world    "/hello"                 24 hours ago         Exited (0) 24 hours ago                   jovial_robinson
+44ee5b0b73bd   hello-world    "/hello"                 47 hours ago         Exited (0) 47 hours ago                   festive_jang
+8449eea16e82   nginx          "/docker-entrypoint.…"   2 days ago           Up 2 days                       80/tcp    stoic_bell
+e09595d47583   nginx          "/docker-entrypoint.…"   2 days ago           Exited (0) 2 days ago                     objective_hoover
+root@vagrant:~/projects/app1# docker rm bc570973d760
+bc570973d760
+root@vagrant:~/projects/app1# docker run -d --name con1 test:v1
+4239319fcc534133db6fccc51d8daed18856a70e21a03d7c77a5dd80744b1382
+root@vagrant:~/projects/app1# docker run --name con2 test:v1 cat /etc/host^C
+root@vagrant:~/projects/app1# cat /etc/hosts
+127.0.0.1       localhost
+127.0.1.1       vagrant.vm      vagrant
+
+# The following lines are desirable for IPv6 capable hosts
+::1     localhost ip6-localhost ip6-loopback
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker run --name con2 test:v1
+root@vagrant:~/projects/app1# docker build -t test:v2 .
+Sending build context to Docker daemon  2.737MB
+Step 1/15 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/15 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/15 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/15 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/15 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/15 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/15 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/15 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/15 : WORKDIR /test
+ ---> Using cache
+ ---> 4b5db259a296
+Step 10/15 : RUN pwd
+ ---> Using cache
+ ---> a6d67afa441c
+Step 11/15 : RUN mkdir /new
+ ---> Using cache
+ ---> 588d9f0365c8
+Step 12/15 : WORKDIR /new
+ ---> Using cache
+ ---> 715c52f15f50
+Step 13/15 : RUN pwd
+ ---> Using cache
+ ---> a05c2883d55c
+Step 14/15 : COPY file1 /var/tmp/
+ ---> Using cache
+ ---> 906aa39ea6a4
+Step 15/15 : ENTRYPOINT cat /var/tmp/file1
+ ---> Running in 0b2a4e415418
+Removing intermediate container 0b2a4e415418
+ ---> 4c42757d8fd8
+Successfully built 4c42757d8fd8
+Successfully tagged test:v2
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker run -name con2 test:v2
+unknown shorthand flag: 'n' in -name
+See 'docker run --help'.
+root@vagrant:~/projects/app1# docker run --name con2 test:v2
+Hello This is fro docker file
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker build -t test:v2 .
+Sending build context to Docker daemon  2.737MB
+Step 1/15 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/15 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/15 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/15 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/15 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/15 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/15 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/15 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/15 : WORKDIR /test
+ ---> Using cache
+ ---> 4b5db259a296
+Step 10/15 : RUN pwd
+ ---> Using cache
+ ---> a6d67afa441c
+Step 11/15 : RUN mkdir /new
+ ---> Using cache
+ ---> 588d9f0365c8
+Step 12/15 : WORKDIR /new
+ ---> Using cache
+ ---> 715c52f15f50
+Step 13/15 : RUN pwd
+ ---> Using cache
+ ---> a05c2883d55c
+Step 14/15 : COPY file1 /var/tmp/
+ ---> Using cache
+ ---> 906aa39ea6a4
+Step 15/15 : CMD cat /var/tmp/file1
+ ---> Using cache
+ ---> 4a34d07a1a92
+Successfully built 4a34d07a1a92
+Successfully tagged test:v2
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker run --name con3 test:v2 cat /etc/hosts
+127.0.0.1       localhost
+::1     localhost ip6-localhost ip6-loopback
+fe00::0 ip6-localnet
+ff00::0 ip6-mcastprefix
+ff02::1 ip6-allnodes
+ff02::2 ip6-allrouters
+172.17.0.3      4ba9fd6119ee
+root@vagrant:~/projects/app1# cat Dockerfile
+FROM ubuntu:latest
+
+LABEL maintainer="retheshnair"
+LABEL email="retheshnair@gmail.com"
+LABEL Team="DevOps team"
+
+RUN apt-get update -y
+RUN mkdir test
+RUN cd test && pwd
+RUN pwd
+
+WORKDIR /test
+RUN pwd
+
+RUN mkdir /new
+
+WORKDIR /new
+RUN pwd
+
+
+COPY file1 /var/tmp/
+#COPY files/test1 /var/tmp
+#ADD file1 /var/tmp
+#COPY putty-0.75.tar.gz /var/tmp/
+#ADD putty-0.75.tar.gz /var/tmp/
+
+#ADD https://the.earth.li/~sgtatham/putty/latest/putty-0.75.tar.gz /var/tmp
+
+CMD cat /var/tmp/file1
+#ENTRYPOINT cat /var/tmp/file1
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# cat Dockerfile
+root@vagrant:~/projects/app1# docker build -t test:v2 .
+Sending build context to Docker daemon  2.737MB
+Step 1/15 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/15 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/15 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/15 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/15 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/15 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/15 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/15 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/15 : WORKDIR /test
+ ---> Using cache
+ ---> 4b5db259a296
+Step 10/15 : RUN pwd
+ ---> Using cache
+ ---> a6d67afa441c
+Step 11/15 : RUN mkdir /new
+ ---> Using cache
+ ---> 588d9f0365c8
+Step 12/15 : WORKDIR /new
+ ---> Using cache
+ ---> 715c52f15f50
+Step 13/15 : RUN pwd
+ ---> Using cache
+ ---> a05c2883d55c
+Step 14/15 : COPY file1 /var/tmp/
+ ---> Using cache
+ ---> 906aa39ea6a4
+Step 15/15 : ENTRYPOINT cat /var/tmp/file1
+ ---> Using cache
+ ---> 4c42757d8fd8
+Successfully built 4c42757d8fd8
+Successfully tagged test:v2
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker run --name con4 test:v2 cat /etc/hosts
+Hello This is fro docker file
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker build -t test:v3 .
+Sending build context to Docker daemon  2.738MB
+Step 1/16 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/16 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/16 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/16 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/16 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/16 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/16 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/16 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/16 : WORKDIR /test
+ ---> Using cache
+ ---> 4b5db259a296
+Step 10/16 : RUN pwd
+ ---> Using cache
+ ---> a6d67afa441c
+Step 11/16 : RUN mkdir /new
+ ---> Using cache
+ ---> 588d9f0365c8
+Step 12/16 : WORKDIR /new
+ ---> Using cache
+ ---> 715c52f15f50
+Step 13/16 : RUN pwd
+ ---> Using cache
+ ---> a05c2883d55c
+Step 14/16 : COPY file1 /var/tmp/
+ ---> Using cache
+ ---> 906aa39ea6a4
+Step 15/16 : ENTRYPOINT ["ping"]
+ ---> Running in 970e9ef0db68
+Removing intermediate container 970e9ef0db68
+ ---> adbe082680af
+Step 16/16 : CMD ["google.com"]
+ ---> Running in 41f6a89a9b34
+Removing intermediate container 41f6a89a9b34
+ ---> 9c4d46dbae99
+Successfully built 9c4d46dbae99
+Successfully tagged test:v3
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker run --name con4 test:v3
+docker: Error response from daemon: Conflict. The container name "/con4" is already in use by container "84ca53176f1a167e8a5832df0257a64964d2ccca12512e8d6768199d7dc10f55". You have to remove (or rename) that container to be able to reuse that name.
+See 'docker run --help'.
+root@vagrant:~/projects/app1# docker run --name con5 test:v3
+docker: Error response from daemon: OCI runtime create failed: container_linux.go:367: starting container process caused: exec: "ping": executable file not found in $PATH: unknown.
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker run --name con5 test:v3
+docker: Error response from daemon: Conflict. The container name "/con5" is already in use by container "27868d0f94bb2dd1362e55d13039d98e4fda57eeb40d0a99dca5ab5fea8a12cc". You have to remove (or rename) that container to be able to reuse that name.
+See 'docker run --help'.
+root@vagrant:~/projects/app1# docker build -t test:v3 .
+Sending build context to Docker daemon  2.738MB
+Step 1/18 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/18 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/18 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/18 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/18 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/18 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/18 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/18 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/18 : WORKDIR /test
+ ---> Using cache
+ ---> 4b5db259a296
+Step 10/18 : RUN pwd
+ ---> Using cache
+ ---> a6d67afa441c
+Step 11/18 : RUN mkdir /new
+ ---> Using cache
+ ---> 588d9f0365c8
+Step 12/18 : WORKDIR /new
+ ---> Using cache
+ ---> 715c52f15f50
+Step 13/18 : RUN pwd
+ ---> Using cache
+ ---> a05c2883d55c
+Step 14/18 : RUN apt-get update -y
+ ---> Running in 71cd5e40953e
+Get:1 http://security.ubuntu.com/ubuntu focal-security InRelease [114 kB]
+Hit:2 http://archive.ubuntu.com/ubuntu focal InRelease
+Get:3 http://archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
+Get:4 http://archive.ubuntu.com/ubuntu focal-backports InRelease [101 kB]
+Get:5 http://archive.ubuntu.com/ubuntu focal-updates/restricted amd64 Packages [299 kB]
+Get:6 http://security.ubuntu.com/ubuntu focal-security/multiverse amd64 Packages [27.6 kB]
+Get:7 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages [829 kB]
+Get:8 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 Packages [973 kB]
+Get:9 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages [1245 kB]
+Get:10 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 Packages [274 kB]
+Get:11 http://security.ubuntu.com/ubuntu focal-security/universe amd64 Packages [716 kB]
+Get:12 http://archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 Packages [29.8 kB]
+Fetched 4722 kB in 10s (478 kB/s)
+Reading package lists...
+Removing intermediate container 71cd5e40953e
+ ---> 8dd14b54296e
+Step 15/18 : RUN apt install iputils-ping -y
+ ---> Running in 2d264834da27
+
+WARNING: apt does not have a stable CLI interface. Use with caution in scripts.
+
+Reading package lists...
+Building dependency tree...
+Reading state information...
+The following additional packages will be installed:
+  libcap2 libcap2-bin libpam-cap
+The following NEW packages will be installed:
+  iputils-ping libcap2 libcap2-bin libpam-cap
+0 upgraded, 4 newly installed, 0 to remove and 0 not upgraded.
+Need to get 90.5 kB of archives.
+After this operation, 333 kB of additional disk space will be used.
+Get:1 http://archive.ubuntu.com/ubuntu focal/main amd64 libcap2 amd64 1:2.32-1 [15.9 kB]
+Get:2 http://archive.ubuntu.com/ubuntu focal/main amd64 libcap2-bin amd64 1:2.32-1 [26.2 kB]
+Get:3 http://archive.ubuntu.com/ubuntu focal/main amd64 iputils-ping amd64 3:20190709-3 [40.1 kB]
+Get:4 http://archive.ubuntu.com/ubuntu focal/main amd64 libpam-cap amd64 1:2.32-1 [8352 B]
+debconf: delaying package configuration, since apt-utils is not installed
+Fetched 90.5 kB in 1s (99.1 kB/s)
+Selecting previously unselected package libcap2:amd64.
+(Reading database ... 4121 files and directories currently installed.)
+Preparing to unpack .../libcap2_1%3a2.32-1_amd64.deb ...
+Unpacking libcap2:amd64 (1:2.32-1) ...
+Selecting previously unselected package libcap2-bin.
+Preparing to unpack .../libcap2-bin_1%3a2.32-1_amd64.deb ...
+Unpacking libcap2-bin (1:2.32-1) ...
+Selecting previously unselected package iputils-ping.
+Preparing to unpack .../iputils-ping_3%3a20190709-3_amd64.deb ...
+Unpacking iputils-ping (3:20190709-3) ...
+Selecting previously unselected package libpam-cap:amd64.
+Preparing to unpack .../libpam-cap_1%3a2.32-1_amd64.deb ...
+Unpacking libpam-cap:amd64 (1:2.32-1) ...
+Setting up libcap2:amd64 (1:2.32-1) ...
+Setting up libcap2-bin (1:2.32-1) ...
+Setting up libpam-cap:amd64 (1:2.32-1) ...
+debconf: unable to initialize frontend: Dialog
+debconf: (TERM is not set, so the dialog frontend is not usable.)
+debconf: falling back to frontend: Readline
+debconf: unable to initialize frontend: Readline
+debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC contains: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.30.0 /usr/local/share/perl/5.30.0 /usr/lib/x86_64-linux-gnu/perl5/5.30 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl/5.30 /usr/share/perl/5.30 /usr/local/lib/site_perl /usr/lib/x86_64-linux-gnu/perl-base) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 7.)
+debconf: falling back to frontend: Teletype
+Setting up iputils-ping (3:20190709-3) ...
+Processing triggers for libc-bin (2.31-0ubuntu9.2) ...
+Removing intermediate container 2d264834da27
+ ---> 55009a1488ad
+Step 16/18 : COPY file1 /var/tmp/
+ ---> 616923f92372
+Step 17/18 : ENTRYPOINT ["ping"]
+ ---> Running in f4344e9675a6
+Removing intermediate container f4344e9675a6
+ ---> fc7b2a4a813c
+Step 18/18 : CMD ["google.com"]
+ ---> Running in a8eed22d5def
+Removing intermediate container a8eed22d5def
+ ---> 9d2edc631a78
+Successfully built 9d2edc631a78
+Successfully tagged test:v3
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker run --name con6 test:v3
+PING google.com (142.250.193.142) 56(84) bytes of data.
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=1 ttl=116 time=11.1 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=2 ttl=116 time=11.6 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=3 ttl=116 time=11.2 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=4 ttl=116 time=11.5 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=5 ttl=116 time=11.1 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=6 ttl=116 time=11.1 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=7 ttl=116 time=11.1 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=8 ttl=116 time=12.0 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=9 ttl=116 time=12.1 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=10 ttl=116 time=11.1 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=11 ttl=116 time=10.9 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=12 ttl=116 time=11.5 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=13 ttl=116 time=10.9 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=14 ttl=116 time=11.6 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=15 ttl=116 time=11.1 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=16 ttl=116 time=11.5 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=17 ttl=116 time=11.1 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=18 ttl=116 time=11.1 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=19 ttl=116 time=10.9 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=20 ttl=116 time=11.9 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=21 ttl=116 time=11.3 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=22 ttl=116 time=11.0 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=23 ttl=116 time=11.8 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=24 ttl=116 time=11.3 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=25 ttl=116 time=11.1 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=26 ttl=116 time=11.0 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=27 ttl=116 time=11.3 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=28 ttl=116 time=11.4 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=29 ttl=116 time=11.2 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=30 ttl=116 time=11.2 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=31 ttl=116 time=11.1 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=32 ttl=116 time=11.2 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=33 ttl=116 time=13.3 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=34 ttl=116 time=11.3 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=35 ttl=116 time=11.8 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=36 ttl=116 time=11.0 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=37 ttl=116 time=11.2 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=38 ttl=116 time=11.2 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=39 ttl=116 time=10.9 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=40 ttl=116 time=11.6 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=41 ttl=116 time=11.3 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=42 ttl=116 time=11.1 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=43 ttl=116 time=11.6 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=44 ttl=116 time=10.8 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=45 ttl=116 time=11.4 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=46 ttl=116 time=10.8 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=47 ttl=116 time=11.2 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=48 ttl=116 time=10.8 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=49 ttl=116 time=11.4 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=50 ttl=116 time=11.5 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=51 ttl=116 time=11.3 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=52 ttl=116 time=11.2 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=53 ttl=116 time=11.2 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=54 ttl=116 time=10.9 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=55 ttl=116 time=10.9 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=56 ttl=116 time=10.8 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=57 ttl=116 time=11.3 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=58 ttl=116 time=11.2 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=59 ttl=116 time=11.1 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=60 ttl=116 time=10.9 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=61 ttl=116 time=11.0 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=62 ttl=116 time=11.1 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=63 ttl=116 time=11.5 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=64 ttl=116 time=11.4 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=65 ttl=116 time=12.9 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=66 ttl=116 time=12.1 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=67 ttl=116 time=11.6 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=68 ttl=116 time=11.2 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=69 ttl=116 time=11.0 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=70 ttl=116 time=11.5 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=71 ttl=116 time=11.4 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=72 ttl=116 time=11.1 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=73 ttl=116 time=11.3 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=74 ttl=116 time=11.1 ms
+64 bytes from maa05s25-in-f14.1e100.net (142.250.193.142): icmp_seq=75 ttl=116 time=11.3 ms
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker run --name con7 test:v3 oracle.com
+PING oracle.com (137.254.120.50) 56(84) bytes of data.
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=1 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=2 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=3 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=4 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=5 ttl=239 time=245 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=6 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=7 ttl=239 time=245 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=8 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=9 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=10 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=11 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=12 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=13 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=14 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=15 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=16 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=17 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=18 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=19 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=20 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=21 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=22 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=23 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=24 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=25 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=26 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=27 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=28 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=29 ttl=239 time=245 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=30 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=31 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=32 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=33 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=34 ttl=239 time=245 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=35 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=36 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=37 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=38 ttl=239 time=245 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=39 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=40 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=41 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=42 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=43 ttl=239 time=245 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=44 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=45 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=46 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=47 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=48 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=49 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=50 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=51 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=52 ttl=239 time=244 ms
+64 bytes from vp-ocoma-cms-adc.oracle.com (137.254.120.50): icmp_seq=53 ttl=239 time=244 ms
+root@vagrant:~/projects/app1# bash
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker run nginx
+/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+/docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default.conf
+10-listen-on-ipv6-by-default.sh: info: Enabled listen on IPv6 in /etc/nginx/conf.d/default.conf
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/20-envsubst-on-templates.sh
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/30-tune-worker-processes.sh
+/docker-entrypoint.sh: Configuration complete; ready for start up
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED      STATUS      PORTS     NAMES
+8449eea16e82   nginx     "/docker-entrypoint.…"   2 days ago   Up 2 days   80/tcp    stoic_bell
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED      STATUS      PORTS     NAMES
+8449eea16e82   nginx     "/docker-entrypoint.…"   2 days ago   Up 2 days   80/tcp    stoic_bell
+root@vagrant:~/projects/app1# docker image ls
+REPOSITORY                        TAG       IMAGE ID       CREATED          SIZE
+test                              v3        9d2edc631a78   12 minutes ago   110MB
+<none>                            <none>    9c4d46dbae99   16 minutes ago   101MB
+test                              v2        4c42757d8fd8   27 minutes ago   101MB
+test                              v1        4a34d07a1a92   33 minutes ago   101MB
+base                              v2        611dc4643fd0   23 hours ago     104MB
+new                               v2        9cc576452e43   23 hours ago     104MB
+<none>                            <none>    b244d381b6f2   23 hours ago     112MB
+<none>                            <none>    07f275f0d9e6   23 hours ago     104MB
+<none>                            <none>    3900c466da4b   24 hours ago     101MB
+<none>                            <none>    360193fe7e80   24 hours ago     101MB
+base1                             v4        a05c2883d55c   24 hours ago     101MB
+<none>                            <none>    dcddaa9d43a6   24 hours ago     101MB
+classretheshreg.azurecr.io/busybox   latest    d3cd072556c2   2 days ago       1.24MB
+busybox                           latest    d3cd072556c2   2 days ago       1.24MB
+redis                             latest    bc8d70f9ef6c   7 days ago       105MB
+nginx                             latest    f0b8a9a54136   7 days ago       133MB
+ngnx                              develop   f0b8a9a54136   7 days ago       133MB
+ubuntu                            latest    7e0aa2d69a15   3 weeks ago      72.7MB
+hello-world                       latest    d1165f221234   2 months ago     13.3kB
+root@vagrant:~/projects/app1# docker run -d --name basecon ubuntu sleep 200
+a0122cecfdc3df3c5e5088acd2bc0155b091006ca66c29f228f2417b1aab6560
+root@vagrant:~/projects/app1# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS     NAMES
+a0122cecfdc3   ubuntu    "sleep 200"              5 seconds ago   Up 4 seconds             basecon
+8449eea16e82   nginx     "/docker-entrypoint.…"   2 days ago      Up 2 days      80/tcp    stoic_bell
+root@vagrant:~/projects/app1# docker exec -it a0122cecfdc3 bash
+root@a0122cecfdc3:/# top
+top - 02:42:29 up  9:46,  0 users,  load average: 0.00, 0.01, 0.00
+Tasks:   3 total,   1 running,   2 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem :    985.5 total,    157.1 free,    212.8 used,    615.5 buff/cache
+MiB Swap:    980.0 total,    974.7 free,      5.3 used.    645.9 avail Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+    1 root      20   0    2512    520    456 S   0.0   0.1   0:00.45 sleep
+    6 root      20   0    4112   3344   2892 S   0.0   0.3   0:00.45 bash
+   13 root      20   0    6104   3188   2692 R   0.0   0.3   0:00.00 top
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+root@a0122cecfdc3:/# exit
+exit
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# cd ../
+root@vagrant:~/projects# mkdir app2
+root@vagrant:~/projects# ls
+app1  app2
+root@vagrant:~/projects# cp app1/Dockerfile .
+root@vagrant:~/projects# vi
+root@vagrant:~/projects# vi Dockerfile
+root@vagrant:~/projects# docker build -t app2:v1 .
+Sending build context to Docker daemon   2.74MB
+Step 1/7 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/7 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/7 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/7 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/7 : RUN groupadd -r oracle
+ ---> Running in b3fe5c83b95f
+Removing intermediate container b3fe5c83b95f
+ ---> 902e23638426
+Step 6/7 : RUN useradd -r -g oracle oracle
+ ---> Running in d9104154d408
+Removing intermediate container d9104154d408
+ ---> e30a938fa1ad
+Step 7/7 : USER oracle
+ ---> Running in 7f39daa5f482
+Removing intermediate container 7f39daa5f482
+ ---> 8c1a9ed5bed0
+Successfully built 8c1a9ed5bed0
+Successfully tagged app2:v1
+root@vagrant:~/projects# docker run -d --name oracle app2:v1 sleep 200
+91cfa3f9d805141da64752ab0941df0eee79cdd2055139b541b645a6b651b496
+root@vagrant:~/projects# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS     NAMES
+91cfa3f9d805   app2:v1   "sleep 200"              4 seconds ago   Up 2 seconds             oracle
+8449eea16e82   nginx     "/docker-entrypoint.…"   2 days ago      Up 2 days      80/tcp    stoic_bell
+root@vagrant:~/projects# docker exec -it 91cfa3f9d805 bash
+oracle@91cfa3f9d805:/$ l
+oracle@91cfa3f9d805:/$ top
+top - 02:49:12 up  9:53,  0 users,  load average: 0.07, 0.02, 0.00
+Tasks:   3 total,   1 running,   2 sleeping,   0 stopped,   0 zombie
+%Cpu(s):  0.0 us,  0.0 sy,  0.0 ni,100.0 id,  0.0 wa,  0.0 hi,  0.0 si,  0.0 st
+MiB Mem :    985.5 total,    152.6 free,    212.8 used,    620.1 buff/cache
+MiB Swap:    980.0 total,    974.7 free,      5.3 used.    646.1 avail Mem
+
+  PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+    1 oracle    20   0    2512    592    524 S   0.0   0.1   0:00.45 sleep
+    6 oracle    20   0    4112   3400   2872 S   0.0   0.3   0:00.45 bash
+   12 oracle    20   0    6104   3176   2676 R   0.0   0.3   0:00.00 top
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+oracle@91cfa3f9d805:/$
+oracle@91cfa3f9d805:/$ root@vagrant:~/projects# cd
+root@vagrant:~# ed
+^C
+?
+^C
+?
+root@vagrant:~# pwd
+/root
+root@vagrant:~# cd projects/
+root@vagrant:~/projects# cd app
+bash: cd: app: No such file or directory
+root@vagrant:~/projects# cd app1
+root@vagrant:~/projects/app1# ls
+Dockerfile  file1  files  putty-0.75.tar.gz
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker ps -a
+CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS                        PORTS     NAMES
+91cfa3f9d805   app2:v1        "sleep 200"              12 minutes ago   Exited (0) 9 minutes ago                oracle
+a0122cecfdc3   ubuntu         "sleep 200"              19 minutes ago   Exited (0) 16 minutes ago               basecon
+08baffe188fe   nginx          "/docker-entrypoint.…"   25 minutes ago   Exited (0) 23 minutes ago               naughty_swirles
+4559553e1fb8   test:v3        "ping oracle.com"        30 minutes ago   Exited (137) 29 minutes ago             con7
+788c960fef71   test:v3        "ping google.com"        32 minutes ago   Exited (137) 31 minutes ago             con6
+27868d0f94bb   9c4d46dbae99   "ping google.com"        35 minutes ago   Created                                 con5
+84ca53176f1a   test:v2        "/bin/sh -c 'cat /va…"   44 minutes ago   Exited (0) 44 minutes ago               con4
+4ba9fd6119ee   4a34d07a1a92   "cat /etc/hosts"         45 minutes ago   Exited (0) 45 minutes ago               con3
+a82dc7c70d64   test:v2        "/bin/sh -c 'cat /va…"   46 minutes ago   Exited (0) 46 minutes ago               con2
+4239319fcc53   test:v1        "/bin/sh -c 'cat /va…"   50 minutes ago   Exited (0) 50 minutes ago               con1
+5e462ae420e1   new:v2         "sleep 200"              24 hours ago     Exited (0) 24 hours ago                 app6
+a7c21367b1d4   b244d381b6f2   "sleep 200"              24 hours ago     Exited (0) 24 hours ago                 app5
+52055f919d3e   07f275f0d9e6   "sleep 200"              24 hours ago     Exited (0) 24 hours ago                 app4
+34792b439688   3900c466da4b   "sleep 200"              24 hours ago     Exited (0) 24 hours ago                 app3
+458caa5f1d1b   360193fe7e80   "sleep 200"              24 hours ago     Exited (0) 24 hours ago                 app2
+f8557caf13d4   hello-world    "/hello"                 25 hours ago     Exited (0) 25 hours ago                 jovial_robinson
+44ee5b0b73bd   hello-world    "/hello"                 2 days ago       Exited (0) 2 days ago                   festive_jang
+8449eea16e82   nginx          "/docker-entrypoint.…"   2 days ago       Up 2 days                     80/tcp    stoic_bell
+e09595d47583   nginx          "/docker-entrypoint.…"   2 days ago       Exited (0) 2 days ago                   objective_hoover
+root@vagrant:~/projects/app1# docker rm e09595d47583 8449eea16e82 8449eea16e82 f8557caf13d4 458caa5f1d1b
+e09595d47583
+f8557caf13d4
+458caa5f1d1b
+Error response from daemon: You cannot remove a running container 8449eea16e828184b84604442a0c6bc6df69ce6f391d70ec5bf55539f2a1927c. Stop the container before attempting removal or force remove
+Error response from daemon: You cannot remove a running container 8449eea16e828184b84604442a0c6bc6df69ce6f391d70ec5bf55539f2a1927c. Stop the container before attempting removal or force remove
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED      STATUS      PORTS     NAMES
+8449eea16e82   nginx     "/docker-entrypoint.…"   2 days ago   Up 2 days   80/tcp    stoic_bell
+root@vagrant:~/projects/app1# docker ps -a
+CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS                        PORTS     NAMES
+91cfa3f9d805   app2:v1        "sleep 200"              13 minutes ago   Exited (0) 10 minutes ago               oracle
+a0122cecfdc3   ubuntu         "sleep 200"              20 minutes ago   Exited (0) 16 minutes ago               basecon
+08baffe188fe   nginx          "/docker-entrypoint.…"   25 minutes ago   Exited (0) 24 minutes ago               naughty_swirles
+4559553e1fb8   test:v3        "ping oracle.com"        31 minutes ago   Exited (137) 30 minutes ago             con7
+788c960fef71   test:v3        "ping google.com"        33 minutes ago   Exited (137) 31 minutes ago             con6
+27868d0f94bb   9c4d46dbae99   "ping google.com"        36 minutes ago   Created                                 con5
+84ca53176f1a   test:v2        "/bin/sh -c 'cat /va…"   44 minutes ago   Exited (0) 44 minutes ago               con4
+4ba9fd6119ee   4a34d07a1a92   "cat /etc/hosts"         46 minutes ago   Exited (0) 46 minutes ago               con3
+a82dc7c70d64   test:v2        "/bin/sh -c 'cat /va…"   47 minutes ago   Exited (0) 47 minutes ago               con2
+4239319fcc53   test:v1        "/bin/sh -c 'cat /va…"   51 minutes ago   Exited (0) 51 minutes ago               con1
+5e462ae420e1   new:v2         "sleep 200"              24 hours ago     Exited (0) 24 hours ago                 app6
+a7c21367b1d4   b244d381b6f2   "sleep 200"              24 hours ago     Exited (0) 24 hours ago                 app5
+52055f919d3e   07f275f0d9e6   "sleep 200"              24 hours ago     Exited (0) 24 hours ago                 app4
+34792b439688   3900c466da4b   "sleep 200"              24 hours ago     Exited (0) 24 hours ago                 app3
+44ee5b0b73bd   hello-world    "/hello"                 2 days ago       Exited (0) 2 days ago                   festive_jang
+8449eea16e82   nginx          "/docker-entrypoint.…"   2 days ago       Up 2 days                     80/tcp    stoic_bell
+root@vagrant:~/projects/app1# docker rm 91cfa3f9d805 a0122cecfdc3 08baffe188fe 4559553e1fb8 788c960fef71 27868d0f94bb
+91cfa3f9d805
+a0122cecfdc3
+08baffe188fe
+4559553e1fb8
+788c960fef71
+27868d0f94bb
+root@vagrant:~/projects/app1# docker rm 788c960fef71 4559553e1fb8 08baffe188fe a0122cecfdc3 91cfa3f9d805
+Error: No such container: 788c960fef71
+Error: No such container: 4559553e1fb8
+Error: No such container: 08baffe188fe
+Error: No such container: a0122cecfdc3
+Error: No such container: 91cfa3f9d805
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker ps -a
+CONTAINER ID   IMAGE          COMMAND                  CREATED          STATUS                      PORTS     NAMES
+84ca53176f1a   test:v2        "/bin/sh -c 'cat /va…"   45 minutes ago   Exited (0) 45 minutes ago             con4
+4ba9fd6119ee   4a34d07a1a92   "cat /etc/hosts"         47 minutes ago   Exited (0) 47 minutes ago             con3
+a82dc7c70d64   test:v2        "/bin/sh -c 'cat /va…"   48 minutes ago   Exited (0) 48 minutes ago             con2
+4239319fcc53   test:v1        "/bin/sh -c 'cat /va…"   52 minutes ago   Exited (0) 52 minutes ago             con1
+5e462ae420e1   new:v2         "sleep 200"              24 hours ago     Exited (0) 24 hours ago               app6
+a7c21367b1d4   b244d381b6f2   "sleep 200"              24 hours ago     Exited (0) 24 hours ago               app5
+52055f919d3e   07f275f0d9e6   "sleep 200"              24 hours ago     Exited (0) 24 hours ago               app4
+34792b439688   3900c466da4b   "sleep 200"              24 hours ago     Exited (0) 24 hours ago               app3
+44ee5b0b73bd   hello-world    "/hello"                 2 days ago       Exited (0) 2 days ago                 festive_jang
+8449eea16e82   nginx          "/docker-entrypoint.…"   2 days ago       Up 2 days                   80/tcp    stoic_bell
+root@vagrant:~/projects/app1# docker rm 84ca53176f1a 4ba9fd6119ee a82dc7c70d64 4239319fcc53 5e462ae420e1 a7c21367b1d4 52055f919d3e
+84ca53176f1a
+4ba9fd6119ee
+a82dc7c70d64
+4239319fcc53
+5e462ae420e1
+a7c21367b1d4
+52055f919d3e
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# cd /var/lib/docker/
+root@vagrant:/var/lib/docker# ls
+buildkit  containers  image  network  overlay2  plugins  runtimes  swarm  tmp  trust  volumes
+root@vagrant:/var/lib/docker# cd containers/
+root@vagrant:/var/lib/docker/containers# ls
+34792b43968813c42595b9aec4faec645f87c18f4ef6a86351d3f9a44694ac92  8449eea16e828184b84604442a0c6bc6df69ce6f391d70ec5bf55539f2a1927c
+44ee5b0b73bd67ae071d6f77b977578b8d7c2163970539034788459e70dd08b5
+root@vagrant:/var/lib/docker/containers# cd 34792b43968813c42595b9aec4faec645f87c18f4ef6a86351d3f9a44694ac92
+root@vagrant:/var/lib/docker/containers/34792b43968813c42595b9aec4faec645f87c18f4ef6a86351d3f9a44694ac92# ls
+34792b43968813c42595b9aec4faec645f87c18f4ef6a86351d3f9a44694ac92-json.log  config.v2.json   hostname  mounts       resolv.conf.hash
+checkpoints                                                                hostconfig.json  hosts     resolv.conf
+root@vagrant:/var/lib/docker/containers/34792b43968813c42595b9aec4faec645f87c18f4ef6a86351d3f9a44694ac92#
+root@vagrant:/var/lib/docker/containers/34792b43968813c42595b9aec4faec645f87c18f4ef6a86351d3f9a44694ac92# cd
+root@vagrant:~#
+root@vagrant:~# docker volume ls
+DRIVER    VOLUME NAME
+root@vagrant:~# docker images
+REPOSITORY                        TAG       IMAGE ID       CREATED          SIZE
+app2                              v1        8c1a9ed5bed0   19 minutes ago   73MB
+test                              v3        9d2edc631a78   38 minutes ago   110MB
+<none>                            <none>    9c4d46dbae99   41 minutes ago   101MB
+test                              v2        4c42757d8fd8   52 minutes ago   101MB
+test                              v1        4a34d07a1a92   58 minutes ago   101MB
+base                              v2        611dc4643fd0   24 hours ago     104MB
+new                               v2        9cc576452e43   24 hours ago     104MB
+<none>                            <none>    b244d381b6f2   24 hours ago     112MB
+<none>                            <none>    07f275f0d9e6   24 hours ago     104MB
+<none>                            <none>    3900c466da4b   24 hours ago     101MB
+<none>                            <none>    360193fe7e80   24 hours ago     101MB
+base1                             v4        a05c2883d55c   24 hours ago     101MB
+<none>                            <none>    dcddaa9d43a6   24 hours ago     101MB
+busybox                           latest    d3cd072556c2   2 days ago       1.24MB
+classretheshreg.azurecr.io/busybox   latest    d3cd072556c2   2 days ago       1.24MB
+redis                             latest    bc8d70f9ef6c   7 days ago       105MB
+nginx                             latest    f0b8a9a54136   7 days ago       133MB
+ngnx                              develop   f0b8a9a54136   7 days ago       133MB
+ubuntu                            latest    7e0aa2d69a15   3 weeks ago      72.7MB
+hello-world                       latest    d1165f221234   2 months ago     13.3kB
+root@vagrant:~# 34792b43968813c42595b9aec4faec645f87c18f4ef6a86351d3f9a44694ac92^C
+root@vagrant:~# docker run -d -v /data --name new ubuntu sleep 200
+755468a53e9d60b6adb7f9eb0752c643c02bdcd5e1d1dbdc734668aaa55bb441
+root@vagrant:~# docker volume ls
+DRIVER    VOLUME NAME
+local     16dfb1d92969f11fe88d8e2424b386229cfcf14cd0fa38d3394a45cbe87dfb2a
+root@vagrant:~# cd /var/lib/docker/volumes/
+root@vagrant:/var/lib/docker/volumes#
+root@vagrant:/var/lib/docker/volumes# ls
+16dfb1d92969f11fe88d8e2424b386229cfcf14cd0fa38d3394a45cbe87dfb2a  backingFsBlockDev  metadata.db
+root@vagrant:/var/lib/docker/volumes# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED              STATUS              PORTS     NAMES
+755468a53e9d   ubuntu    "sleep 200"              About a minute ago   Up About a minute             new
+8449eea16e82   nginx     "/docker-entrypoint.…"   2 days ago           Up 2 days           80/tcp    stoic_bell
+root@vagrant:/var/lib/docker/volumes# docker exec -it 755468a53e9d bash
+root@755468a53e9d:/# df -h
+Filesystem                    Size  Used Avail Use% Mounted on
+overlay                        62G  2.5G   57G   5% /
+tmpfs                          64M     0   64M   0% /dev
+tmpfs                         493M     0  493M   0% /sys/fs/cgroup
+shm                            64M     0   64M   0% /dev/shm
+/dev/mapper/vagrant--vg-root   62G  2.5G   57G   5% /data
+tmpfs                         493M     0  493M   0% /proc/acpi
+tmpfs                         493M     0  493M   0% /proc/scsi
+tmpfs                         493M     0  493M   0% /sys/firmware
+root@755468a53e9d:/# cd /data/
+root@755468a53e9d:/data# toche file1
+bash: toche: command not found
+root@755468a53e9d:/data# touch file1
+root@755468a53e9d:/data# exit
+exit
+root@vagrant:/var/lib/docker/volumes# ls
+16dfb1d92969f11fe88d8e2424b386229cfcf14cd0fa38d3394a45cbe87dfb2a  backingFsBlockDev  metadata.db
+root@vagrant:/var/lib/docker/volumes# cd 16dfb1d92969f11fe88d8e2424b386229cfcf14cd0fa38d3394a45cbe87dfb2a/
+root@vagrant:/var/lib/docker/volumes/16dfb1d92969f11fe88d8e2424b386229cfcf14cd0fa38d3394a45cbe87dfb2a# ls
+_data
+root@vagrant:/var/lib/docker/volumes/16dfb1d92969f11fe88d8e2424b386229cfcf14cd0fa38d3394a45cbe87dfb2a# cd _data/
+root@vagrant:/var/lib/docker/volumes/16dfb1d92969f11fe88d8e2424b386229cfcf14cd0fa38d3394a45cbe87dfb2a/_data# ls
+file1
+root@vagrant:/var/lib/docker/volumes/16dfb1d92969f11fe88d8e2424b386229cfcf14cd0fa38d3394a45cbe87dfb2a/_data#
+root@vagrant:/var/lib/docker/volumes/16dfb1d92969f11fe88d8e2424b386229cfcf14cd0fa38d3394a45cbe87dfb2a/_data# cd
+root@vagrant:~# docker run -d -v vol1:/data --name new1 ubuntu sleep 2000
+d02119999363f70374a2bf3090f166e81f1b7f05cdbcfd72212d29ac046a5418
+root@vagrant:~# docker volume ls
+DRIVER    VOLUME NAME
+local     16dfb1d92969f11fe88d8e2424b386229cfcf14cd0fa38d3394a45cbe87dfb2a
+local     vol1
+root@vagrant:~# docker inspect vol1
+[
+    {
+        "CreatedAt": "2021-05-20T03:12:18Z",
+        "Driver": "local",
+        "Labels": null,
+        "Mountpoint": "/var/lib/docker/volumes/vol1/_data",
+        "Name": "vol1",
+        "Options": null,
+        "Scope": "local"
+    }
+]
+root@vagrant:~#
+root@vagrant:~# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED              STATUS              PORTS     NAMES
+d02119999363   ubuntu    "sleep 2000"             About a minute ago   Up About a minute             new1
+8449eea16e82   nginx     "/docker-entrypoint.…"   2 days ago           Up 2 days           80/tcp    stoic_bell
+root@vagrant:~# docker exec -it d02119999363 bash
+root@d02119999363:/# df -h
+Filesystem                    Size  Used Avail Use% Mounted on
+overlay                        62G  2.5G   57G   5% /
+tmpfs                          64M     0   64M   0% /dev
+tmpfs                         493M     0  493M   0% /sys/fs/cgroup
+shm                            64M     0   64M   0% /dev/shm
+/dev/mapper/vagrant--vg-root   62G  2.5G   57G   5% /data
+tmpfs                         493M     0  493M   0% /proc/acpi
+tmpfs                         493M     0  493M   0% /proc/scsi
+tmpfs                         493M     0  493M   0% /sys/firmware
+root@d02119999363:/# cd /data
+root@d02119999363:/data# vi file2
+bash: vi: command not found
+root@d02119999363:/data# echo "this is from inside the con2" > file2
+root@d02119999363:/data# cat file2
+this is from inside the con2
+root@d02119999363:/data# exit
+exit
+root@vagrant:~# docker run -d -v vol1:/data1 --name new2 ubuntu sleep 2000
+c0657be29ae9bc9656cd8fe8694bd24621e2e5ff366fe5e65287a0fe3a9b0537
+root@vagrant:~# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS     NAMES
+c0657be29ae9   ubuntu    "sleep 2000"             6 seconds ago   Up 4 seconds             new2
+d02119999363   ubuntu    "sleep 2000"             3 minutes ago   Up 3 minutes             new1
+8449eea16e82   nginx     "/docker-entrypoint.…"   2 days ago      Up 2 days      80/tcp    stoic_bell
+root@vagrant:~# docker exec -it  new2 bash
+root@c0657be29ae9:/# df -h
+Filesystem                    Size  Used Avail Use% Mounted on
+overlay                        62G  2.5G   57G   5% /
+tmpfs                          64M     0   64M   0% /dev
+tmpfs                         493M     0  493M   0% /sys/fs/cgroup
+shm                            64M     0   64M   0% /dev/shm
+/dev/mapper/vagrant--vg-root   62G  2.5G   57G   5% /data1
+tmpfs                         493M     0  493M   0% /proc/acpi
+tmpfs                         493M     0  493M   0% /proc/scsi
+tmpfs                         493M     0  493M   0% /sys/firmware
+root@c0657be29ae9:/# cd /data1
+root@c0657be29ae9:/data1#
+root@c0657be29ae9:/data1# ls
+file2
+root@c0657be29ae9:/data1# cat file2
+this is from inside the con2
+root@c0657be29ae9:/data1# exit
+exit
+root@vagrant:~#
+root@vagrant:~# cd /var/lib/docker/
+root@vagrant:/var/lib/docker# ls
+buildkit  containers  image  network  overlay2  plugins  runtimes  swarm  tmp  trust  volumes
+root@vagrant:/var/lib/docker# cd volumes/
+root@vagrant:/var/lib/docker/volumes# ls
+16dfb1d92969f11fe88d8e2424b386229cfcf14cd0fa38d3394a45cbe87dfb2a  backingFsBlockDev  metadata.db  vol1
+root@vagrant:/var/lib/docker/volumes# cd vol1
+root@vagrant:/var/lib/docker/volumes/vol1# ls
+_data
+root@vagrant:/var/lib/docker/volumes/vol1# cd _data/
+root@vagrant:/var/lib/docker/volumes/vol1/_data# ls
+file2
+root@vagrant:/var/lib/docker/volumes/vol1/_data# cat file2
+this is from inside the con2
+root@vagrant:/var/lib/docker/volumes/vol1/_data#
+root@vagrant:/var/lib/docker/volumes/vol1/_data# cd
+root@vagrant:~# mkdir data
+root@vagrant:~# docker run -d -v /opt:/opt --image=nginx ubuntu sleep 2000
+unknown flag: --image
+See 'docker run --help'.
+root@vagrant:~# docker run -d -v /opt:/opt --name hostcon ubuntu sleep 2000
+8e9138a3d6e5dd6acfc92a3a834db629be234f7e477e26c616e452b6cb7ce3ee
+root@vagrant:~# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED          STATUS          PORTS     NAMES
+8e9138a3d6e5   ubuntu    "sleep 2000"             7 seconds ago    Up 6 seconds              hostcon
+c0657be29ae9   ubuntu    "sleep 2000"             7 minutes ago    Up 7 minutes              new2
+d02119999363   ubuntu    "sleep 2000"             10 minutes ago   Up 10 minutes             new1
+8449eea16e82   nginx     "/docker-entrypoint.…"   2 days ago       Up 2 days       80/tcp    stoic_bell
+root@vagrant:~# docker exec -it hostcon bash
+root@8e9138a3d6e5:/# df -h
+Filesystem                    Size  Used Avail Use% Mounted on
+overlay                        62G  2.5G   57G   5% /
+tmpfs                          64M     0   64M   0% /dev
+tmpfs                         493M     0  493M   0% /sys/fs/cgroup
+shm                            64M     0   64M   0% /dev/shm
+/dev/mapper/vagrant--vg-root   62G  2.5G   57G   5% /opt
+tmpfs                         493M     0  493M   0% /proc/acpi
+tmpfs                         493M     0  493M   0% /proc/scsi
+tmpfs                         493M     0  493M   0% /sys/firmware
+root@8e9138a3d6e5:/# exit
+exit
+root@vagrant:~#
+root@vagrant:~# docker run -d -v vol1:/data1 --name new2 ubuntu sleep 2000^C
+root@vagrant:~#

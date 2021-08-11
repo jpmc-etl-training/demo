@@ -1,0 +1,1094 @@
+aws ecr get-login-password --region us-east-1  | docker login --username AWS --password-stdin 187493414600.dkr.ecr.us-east-1.amazonaws.com/rethesh
+
+login as: vagrant
+Authenticating with public key "imported-openssh-key"
+Welcome to Ubuntu 18.04.3 LTS (GNU/Linux 4.15.0-72-generic x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/advantage
+
+  System information as of Wed May 19 02:10:25 UTC 2021
+
+  System load:  0.0               Processes:              112
+  Usage of /:   3.8% of 61.80GB   Users logged in:        1
+  Memory usage: 23%               IP address for eth0:    10.0.2.15
+  Swap usage:   0%                IP address for docker0: 172.17.0.1
+
+ * Pure upstream Kubernetes 1.21, smallest, simplest cluster ops!
+
+     https://microk8s.io/
+
+218 packages can be updated.
+165 updates are security updates.
+
+
+
+This system is built by the Bento project by Chef Software
+More information can be found at https://github.com/chef/bento
+Last login: Tue May 18 02:18:06 2021 from 10.0.2.2
+vagrant@vagrant:~$ sudo su -
+root@vagrant:~#
+root@vagrant:~# mkdir projects
+root@vagrant:~# cd projects/
+root@vagrant:~/projects# mkdir app1
+root@vagrant:~/projects# cd app1
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker build -t base:v1 .
+Sending build context to Docker daemon  2.048kB
+Step 1/1 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Successfully built 7e0aa2d69a15
+Successfully tagged base:v1
+root@vagrant:~/projects/app1# docker image ls
+REPOSITORY                        TAG       IMAGE ID       CREATED        SIZE
+classretheshreg.azurecr.io/busybox   latest    d3cd072556c2   28 hours ago   1.24MB
+busybox                           latest    d3cd072556c2   28 hours ago   1.24MB
+redis                             latest    bc8d70f9ef6c   6 days ago     105MB
+ngnx                              develop   f0b8a9a54136   6 days ago     133MB
+nginx                             latest    f0b8a9a54136   6 days ago     133MB
+base                              v1        7e0aa2d69a15   3 weeks ago    72.7MB
+ubuntu                            latest    7e0aa2d69a15   3 weeks ago    72.7MB
+hello-world                       latest    d1165f221234   2 months ago   13.3kB
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker build -t base:v2 .
+Sending build context to Docker daemon  2.048kB
+Step 1/4 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/4 : LABEL maintainer="retheshnair"
+ ---> Running in 3065778b5e64
+Removing intermediate container 3065778b5e64
+ ---> 78dd043035cf
+Step 3/4 : LABEL email="retheshnair@gmail.com"
+ ---> Running in 2fef4bf0b71a
+Removing intermediate container 2fef4bf0b71a
+ ---> ac0c306a561c
+Step 4/4 : LABEL Team="DevOps team"
+ ---> Running in ee3171df03b6
+Removing intermediate container ee3171df03b6
+ ---> b61c0986d550
+Successfully built b61c0986d550
+Successfully tagged base:v2
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker image ls
+REPOSITORY                        TAG       IMAGE ID       CREATED          SIZE
+base                              v2        b61c0986d550   12 seconds ago   72.7MB
+classretheshreg.azurecr.io/busybox   latest    d3cd072556c2   28 hours ago     1.24MB
+busybox                           latest    d3cd072556c2   28 hours ago     1.24MB
+redis                             latest    bc8d70f9ef6c   6 days ago       105MB
+nginx                             latest    f0b8a9a54136   6 days ago       133MB
+ngnx                              develop   f0b8a9a54136   6 days ago       133MB
+base                              v1        7e0aa2d69a15   3 weeks ago      72.7MB
+ubuntu                            latest    7e0aa2d69a15   3 weeks ago      72.7MB
+hello-world                       latest    d1165f221234   2 months ago     13.3kB
+root@vagrant:~/projects/app1# docker run -d --name app1 base:v2
+b5eacb7c87ff84284d9969498e3466df2218b737f4f68a46499224120842ff81
+root@vagrant:~/projects/app1# docker ps -a
+CONTAINER ID   IMAGE         COMMAND                  CREATED         STATUS                     PORTS     NAMES
+b5eacb7c87ff   base:v2       "/bin/bash"              9 seconds ago   Exited (0) 7 seconds ago             app1
+44ee5b0b73bd   hello-world   "/hello"                 23 hours ago    Exited (0) 23 hours ago              festive_jang
+8449eea16e82   nginx         "/docker-entrypoint.…"   24 hours ago    Up 24 hours                80/tcp    stoic_bell
+e09595d47583   nginx         "/docker-entrypoint.…"   24 hours ago    Exited (0) 24 hours ago              objective_hoover
+root@vagrant:~/projects/app1# docker rm b5eacb7c87ff
+b5eacb7c87ff
+root@vagrant:~/projects/app1# docker run -d --name app1 base:v2 sleep 100
+fbcb4f180a85d528fed982beae0a265f8323890a28b6922caf7decca419003ba
+root@vagrant:~/projects/app1# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED         STATUS         PORTS     NAMES
+fbcb4f180a85   base:v2   "sleep 100"              4 seconds ago   Up 3 seconds             app1
+8449eea16e82   nginx     "/docker-entrypoint.…"   24 hours ago    Up 24 hours    80/tcp    stoic_bell
+root@vagrant:~/projects/app1# docker exec -it fbcb4f180a85 bash
+root@fbcb4f180a85:/# uname
+Linux
+root@fbcb4f180a85:/# hostname
+fbcb4f180a85
+root@fbcb4f180a85:/# root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker run -d --name app1 base:v2 sleep 100^C
+root@vagrant:~/projects/app1# docker run helloworld
+Unable to find image 'helloworld:latest' locally
+^C
+root@vagrant:~/projects/app1# docker run hello-world
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+
+To generate this message, Docker took the following steps:
+ 1. The Docker client contacted the Docker daemon.
+ 2. The Docker daemon pulled the "hello-world" image from the Docker Hub.
+    (amd64)
+ 3. The Docker daemon created a new container from that image which runs the
+    executable that produces the output you are currently reading.
+ 4. The Docker daemon streamed that output to the Docker client, which sent it
+    to your terminal.
+
+To try something more ambitious, you can run an Ubuntu container with:
+ $ docker run -it ubuntu bash
+
+Share images, automate workflows, and more with a free Docker ID:
+ https://hub.docker.com/
+
+For more examples and ideas, visit:
+ https://docs.docker.com/get-started/
+
+root@vagrant:~/projects/app1# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED        STATUS        PORTS     NAMES
+8449eea16e82   nginx     "/docker-entrypoint.…"   24 hours ago   Up 24 hours   80/tcp    stoic_bell
+root@vagrant:~/projects/app1# docker ps -a
+CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS                      PORTS     NAMES
+f8557caf13d4   hello-world   "/hello"                 25 seconds ago   Exited (0) 24 seconds ago             jovial_robinson
+fbcb4f180a85   base:v2       "sleep 100"              4 minutes ago    Exited (0) 2 minutes ago              app1
+44ee5b0b73bd   hello-world   "/hello"                 23 hours ago     Exited (0) 23 hours ago               festive_jang
+8449eea16e82   nginx         "/docker-entrypoint.…"   24 hours ago     Up 24 hours                 80/tcp    stoic_bell
+e09595d47583   nginx         "/docker-entrypoint.…"   24 hours ago     Exited (0) 24 hours ago               objective_hoover
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker run  --name app2 base:v2 sleep 100
+
+
+^Croot@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker run -d --name app1 base:v2 sleep 100
+root@vagrant:~/projects/app1# docker run -d --name app1 base:v2 sleep 100
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker build -t base:v3 .
+Sending build context to Docker daemon  2.048kB
+Step 1/5 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/5 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/5 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/5 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/5 : RUN apt-get update -y
+ ---> Running in b903e15b5f7a
+Get:1 http://archive.ubuntu.com/ubuntu focal InRelease [265 kB]
+Get:2 http://security.ubuntu.com/ubuntu focal-security InRelease [109 kB]
+Get:3 http://archive.ubuntu.com/ubuntu focal-updates InRelease [114 kB]
+Get:4 http://archive.ubuntu.com/ubuntu focal-backports InRelease [101 kB]
+Get:5 http://security.ubuntu.com/ubuntu focal-security/restricted amd64 Packages [267 kB]
+Get:6 http://archive.ubuntu.com/ubuntu focal/main amd64 Packages [1275 kB]
+Get:7 http://security.ubuntu.com/ubuntu focal-security/multiverse amd64 Packages [21.7 kB]
+Get:8 http://security.ubuntu.com/ubuntu focal-security/universe amd64 Packages [704 kB]
+Get:9 http://archive.ubuntu.com/ubuntu focal/universe amd64 Packages [11.3 MB]
+Get:10 http://security.ubuntu.com/ubuntu focal-security/main amd64 Packages [825 kB]
+Get:11 http://archive.ubuntu.com/ubuntu focal/restricted amd64 Packages [33.4 kB]
+Get:12 http://archive.ubuntu.com/ubuntu focal/multiverse amd64 Packages [177 kB]
+Get:13 http://archive.ubuntu.com/ubuntu focal-updates/multiverse amd64 Packages [29.7 kB]
+Get:14 http://archive.ubuntu.com/ubuntu focal-updates/main amd64 Packages [1245 kB]
+Get:15 http://archive.ubuntu.com/ubuntu focal-updates/universe amd64 Packages [973 kB]
+Get:16 http://archive.ubuntu.com/ubuntu focal-updates/restricted amd64 Packages [299 kB]
+Get:17 http://archive.ubuntu.com/ubuntu focal-backports/universe amd64 Packages [4305 B]
+Fetched 17.8 MB in 42s (425 kB/s)
+Reading package lists...
+Removing intermediate container b903e15b5f7a
+ ---> 16e2ccecb4d4
+Successfully built 16e2ccecb4d4
+Successfully tagged base:v3
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker build -t base:v3 .
+Sending build context to Docker daemon  2.048kB
+Step 1/7 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/7 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/7 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/7 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/7 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/7 : RUN mkdir test
+ ---> Running in aec9740c2f9f
+Removing intermediate container aec9740c2f9f
+ ---> 0da24b57d023
+Step 7/7 : RUN cd test
+ ---> Running in 20c27399b46e
+Removing intermediate container 20c27399b46e
+ ---> 4c3f9ac55321
+Successfully built 4c3f9ac55321
+Successfully tagged base:v3
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker build -t base:v3 .
+Sending build context to Docker daemon  2.048kB
+Step 1/8 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/8 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/8 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/8 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/8 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/8 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/8 : RUN cd test
+ ---> Using cache
+ ---> 4c3f9ac55321
+Step 8/8 : RUN pwd
+ ---> Running in 66579579d33e
+/
+Removing intermediate container 66579579d33e
+ ---> dcddaa9d43a6
+Successfully built dcddaa9d43a6
+Successfully tagged base:v3
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker build -t base:v3 .
+Sending build context to Docker daemon  2.048kB
+Step 1/8 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/8 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/8 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/8 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/8 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/8 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/8 : RUN cd test && pwd
+ ---> Running in ec89288a830d
+/test
+Removing intermediate container ec89288a830d
+ ---> 1fbf8ef2a0fe
+Step 8/8 : RUN pwd
+ ---> Running in 8c778d8aa4df
+/
+Removing intermediate container 8c778d8aa4df
+ ---> ed73b75580b6
+Successfully built ed73b75580b6
+Successfully tagged base:v3
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker build -t base:v3 .
+Sending build context to Docker daemon  2.048kB
+Step 1/10 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/10 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/10 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/10 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/10 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/10 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/10 : RUN cd test && pwd
+ ---> Using cache
+ ---> 1fbf8ef2a0fe
+Step 8/10 : RUN pwd
+ ---> Using cache
+ ---> ed73b75580b6
+Step 9/10 : WORKDIR /test
+ ---> Running in 1e1e7c93f28c
+Removing intermediate container 1e1e7c93f28c
+ ---> 82a842b67853
+Step 10/10 : RUN pwd
+ ---> Running in 55941cc0022e
+/test
+Removing intermediate container 55941cc0022e
+ ---> 9a75daf20861
+Successfully built 9a75daf20861
+Successfully tagged base:v3
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker image ls
+REPOSITORY                        TAG       IMAGE ID       CREATED          SIZE
+base                              v3        9a75daf20861   35 seconds ago   101MB
+<none>                            <none>    dcddaa9d43a6   4 minutes ago    101MB
+base                              v2        b61c0986d550   18 minutes ago   72.7MB
+busybox                           latest    d3cd072556c2   28 hours ago     1.24MB
+classretheshreg.azurecr.io/busybox   latest    d3cd072556c2   28 hours ago     1.24MB
+redis                             latest    bc8d70f9ef6c   6 days ago       105MB
+nginx                             latest    f0b8a9a54136   6 days ago       133MB
+ngnx                              develop   f0b8a9a54136   6 days ago       133MB
+ubuntu                            latest    7e0aa2d69a15   3 weeks ago      72.7MB
+base                              v1        7e0aa2d69a15   3 weeks ago      72.7MB
+hello-world                       latest    d1165f221234   2 months ago     13.3kB
+root@vagrant:~/projects/app1# docker rmi base:v3
+Untagged: base:v3
+Deleted: sha256:9a75daf208615afe80168c78e529816bbff123b9ab6c84674f6f676fa252a7f1
+Deleted: sha256:82a842b67853ae527a84f87f5d9e50abb8d4732f43689eeff6ac5ab2d050b091
+Deleted: sha256:ed73b75580b6af4a00dc166856504d0e27b6dbc28656955a5328663c8a5fc7bb
+Deleted: sha256:1fbf8ef2a0fe75b9d7a7dcb3258f3d8bf2c3f7c391688c3259af396a5fabbce7
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker build -t base:v3 .
+Sending build context to Docker daemon  2.048kB
+Step 1/10 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/10 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/10 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/10 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/10 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/10 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/10 : RUN cd test && pwd
+ ---> Running in a9c11c67377f
+/test
+Removing intermediate container a9c11c67377f
+ ---> c8031697064c
+Step 8/10 : RUN pwd
+ ---> Running in f4aeeded9ef4
+/
+Removing intermediate container f4aeeded9ef4
+ ---> 203099448561
+Step 9/10 : WORKDIR /test
+ ---> Running in 94fa9b451460
+Removing intermediate container 94fa9b451460
+ ---> 4b5db259a296
+Step 10/10 : RUN pwd
+ ---> Running in a150c8f0ee19
+/test
+Removing intermediate container a150c8f0ee19
+ ---> a6d67afa441c
+Successfully built a6d67afa441c
+Successfully tagged base:v3
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker build -t base:v4 .
+Sending build context to Docker daemon  2.048kB
+Step 1/13 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/13 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/13 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/13 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/13 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/13 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/13 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/13 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/13 : WORKDIR /test
+ ---> Using cache
+ ---> 4b5db259a296
+Step 10/13 : RUN pwd
+ ---> Using cache
+ ---> a6d67afa441c
+Step 11/13 : RUN mkdir /new
+ ---> Running in c0c1b7121cc9
+Removing intermediate container c0c1b7121cc9
+ ---> 167334e6c9cb
+Step 12/13 : WORKDIR /new
+ ---> Running in 7b4c90915d9b
+Removing intermediate container 7b4c90915d9b
+ ---> 6500e294017b
+Step 13/13 : RUN pwd
+ ---> Running in 2481deb62a40
+/new
+Removing intermediate container 2481deb62a40
+ ---> b25d07a17347
+Successfully built b25d07a17347
+Successfully tagged base:v4
+root@vagrant:~/projects/app1# docker rmi base:v4
+Untagged: base:v4
+Deleted: sha256:b25d07a1734718e847a52b43cf1e3863f3bf64e6bb2ecadff0068dc6a216f0b5
+Deleted: sha256:6500e294017be9d1084c62a9cdc422c4e3a5b02d1021dd9014dca9c5bbd9e66e
+Deleted: sha256:167334e6c9cb2cff81bb66a7d8e35463c22d06145460d512f8afb43ed8449efb
+Deleted: sha256:a51b0d65f713458344fd4f6983d0cec08b65c15cd00f5e68495a782e0eac678b
+root@vagrant:~/projects/app1# docker build -t base:v4 .
+Sending build context to Docker daemon  2.048kB
+Step 1/13 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/13 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/13 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/13 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/13 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/13 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/13 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/13 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/13 : WORKDIR /test
+ ---> Using cache
+ ---> 4b5db259a296
+Step 10/13 : RUN pwd
+ ---> Using cache
+ ---> a6d67afa441c
+Step 11/13 : RUN mkdir /new
+ ---> Running in 4591caea6e66
+Removing intermediate container 4591caea6e66
+ ---> 588d9f0365c8
+Step 12/13 : WORKDIR /new
+ ---> Running in 111abb768023
+Removing intermediate container 111abb768023
+ ---> 715c52f15f50
+Step 13/13 : RUN pwd
+ ---> Running in caa38e15e911
+/new
+Removing intermediate container caa38e15e911
+ ---> a05c2883d55c
+Successfully built a05c2883d55c
+Successfully tagged base:v4
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker build -t base1:v4 .
+Sending build context to Docker daemon  2.048kB
+Step 1/13 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/13 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/13 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/13 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/13 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/13 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/13 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/13 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/13 : WORKDIR /test
+ ---> Using cache
+ ---> 4b5db259a296
+Step 10/13 : RUN pwd
+ ---> Using cache
+ ---> a6d67afa441c
+Step 11/13 : RUN mkdir /new
+ ---> Using cache
+ ---> 588d9f0365c8
+Step 12/13 : WORKDIR /new
+ ---> Using cache
+ ---> 715c52f15f50
+Step 13/13 : RUN pwd
+ ---> Using cache
+ ---> a05c2883d55c
+Successfully built a05c2883d55c
+Successfully tagged base1:v4
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker image ls
+REPOSITORY                        TAG       IMAGE ID       CREATED          SIZE
+base1                             v4        a05c2883d55c   35 seconds ago   101MB
+base                              v4        a05c2883d55c   35 seconds ago   101MB
+base                              v3        a6d67afa441c   7 minutes ago    101MB
+<none>                            <none>    dcddaa9d43a6   12 minutes ago   101MB
+base                              v2        b61c0986d550   27 minutes ago   72.7MB
+classretheshreg.azurecr.io/busybox   latest    d3cd072556c2   29 hours ago     1.24MB
+busybox                           latest    d3cd072556c2   29 hours ago     1.24MB
+redis                             latest    bc8d70f9ef6c   6 days ago       105MB
+nginx                             latest    f0b8a9a54136   6 days ago       133MB
+ngnx                              develop   f0b8a9a54136   6 days ago       133MB
+base                              v1        7e0aa2d69a15   3 weeks ago      72.7MB
+ubuntu                            latest    7e0aa2d69a15   3 weeks ago      72.7MB
+hello-world                       latest    d1165f221234   2 months ago     13.3kB
+root@vagrant:~/projects/app1# docker rm1 base:v1
+docker: 'rm1' is not a docker command.
+See 'docker --help'
+root@vagrant:~/projects/app1# docker rmi base:v1
+Untagged: base:v1
+root@vagrant:~/projects/app1# docker rmi base:v2
+Error response from daemon: conflict: unable to remove repository reference "base:v2" (must force) - container fbcb4f180a85 is using its referenced image b61c0986d550
+root@vagrant:~/projects/app1# docker rmi base:v3
+Untagged: base:v3
+root@vagrant:~/projects/app1# docker rmi base:v4
+Untagged: base:v4
+root@vagrant:~/projects/app1# docker ps -a
+CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS                        PORTS     NAMES
+a4afdd0c70f8   base:v2       "sleep 100"              18 minutes ago   Exited (137) 17 minutes ago             app2
+f8557caf13d4   hello-world   "/hello"                 21 minutes ago   Exited (0) 21 minutes ago               jovial_robinson
+fbcb4f180a85   base:v2       "sleep 100"              25 minutes ago   Exited (0) 23 minutes ago               app1
+44ee5b0b73bd   hello-world   "/hello"                 24 hours ago     Exited (0) 24 hours ago                 festive_jang
+8449eea16e82   nginx         "/docker-entrypoint.…"   24 hours ago     Up 24 hours                   80/tcp    stoic_bell
+e09595d47583   nginx         "/docker-entrypoint.…"   24 hours ago     Exited (0) 24 hours ago                 objective_hoover
+root@vagrant:~/projects/app1# docker rm fbcb4f180a85
+fbcb4f180a85
+root@vagrant:~/projects/app1# docker rm a4afdd0c70f8
+a4afdd0c70f8
+root@vagrant:~/projects/app1# docker rmi base:v2
+Untagged: base:v2
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker build -t base1:v4 .
+Sending build context to Docker daemon  2.048kB
+Step 1/13 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/13 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/13 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/13 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/13 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/13 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/13 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/13 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/13 : WORKDIR /test
+ ---> Using cache
+ ---> 4b5db259a296
+Step 10/13 : RUN pwd
+ ---> Using cache
+ ---> a6d67afa441c
+Step 11/13 : RUN mkdir /new
+ ---> Using cache
+ ---> 588d9f0365c8
+Step 12/13 : WORKDIR /new
+ ---> Using cache
+ ---> 715c52f15f50
+Step 13/13 : RUN pwd
+ ---> Using cache
+ ---> a05c2883d55c
+Successfully built a05c2883d55c
+Successfully tagged base1:v4
+root@vagrant:~/projects/app1# docker image ls
+REPOSITORY                        TAG       IMAGE ID       CREATED          SIZE
+base1                             v4        a05c2883d55c   2 minutes ago    101MB
+<none>                            <none>    dcddaa9d43a6   14 minutes ago   101MB
+classretheshreg.azurecr.io/busybox   latest    d3cd072556c2   29 hours ago     1.24MB
+busybox                           latest    d3cd072556c2   29 hours ago     1.24MB
+redis                             latest    bc8d70f9ef6c   6 days ago       105MB
+ngnx                              develop   f0b8a9a54136   6 days ago       133MB
+nginx                             latest    f0b8a9a54136   6 days ago       133MB
+ubuntu                            latest    7e0aa2d69a15   3 weeks ago      72.7MB
+hello-world                       latest    d1165f221234   2 months ago     13.3kB
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker build -t base1:v4 .
+Sending build context to Docker daemon  2.048kB
+Step 1/13 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/13 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/13 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/13 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/13 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/13 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/13 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/13 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/13 : WORKDIR /test
+ ---> Using cache
+ ---> 4b5db259a296
+Step 10/13 : RUN pwd
+ ---> Using cache
+ ---> a6d67afa441c
+Step 11/13 : RUN mkdir /new
+ ---> Using cache
+ ---> 588d9f0365c8
+Step 12/13 : WORKDIR /new
+ ---> Using cache
+ ---> 715c52f15f50
+Step 13/13 : RUN pwd
+ ---> Using cache
+ ---> a05c2883d55c
+Successfully built a05c2883d55c
+Successfully tagged base1:v4
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# pwd
+/root/projects/app1
+root@vagrant:~/projects/app1# vi file1
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker build -t new:v2 .
+Sending build context to Docker daemon  3.072kB
+Step 1/12 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/12 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/12 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/12 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/12 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/12 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/12 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/12 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/12 : RUN pwd
+ ---> Running in 25951ab4906d
+/
+Removing intermediate container 25951ab4906d
+ ---> c21ab4ec598f
+Step 10/12 : RUN mkdir /new
+ ---> Running in bfce6f324771
+Removing intermediate container bfce6f324771
+ ---> 7d2a57cd6d03
+Step 11/12 : RUN pwd
+ ---> Running in 1d2178398cd3
+/
+Removing intermediate container 1d2178398cd3
+ ---> b003dab4344e
+Step 12/12 : COPY file1 /var/tmp/
+ ---> 360193fe7e80
+Successfully built 360193fe7e80
+Successfully tagged new:v2
+root@vagrant:~/projects/app1# ls
+Dockerfile  file1
+root@vagrant:~/projects/app1# mkdir files
+root@vagrant:~/projects/app1# cd files
+root@vagrant:~/projects/app1/files# touch test1 test2 test3
+root@vagrant:~/projects/app1/files# ls
+test1  test2  test3
+root@vagrant:~/projects/app1/files# cd ../
+root@vagrant:~/projects/app1# ls
+Dockerfile  file1  files
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker images
+REPOSITORY                        TAG       IMAGE ID       CREATED          SIZE
+new                               v2        360193fe7e80   2 minutes ago    101MB
+base1                             v4        a05c2883d55c   11 minutes ago   101MB
+<none>                            <none>    dcddaa9d43a6   24 minutes ago   101MB
+classretheshreg.azurecr.io/busybox   latest    d3cd072556c2   29 hours ago     1.24MB
+busybox                           latest    d3cd072556c2   29 hours ago     1.24MB
+redis                             latest    bc8d70f9ef6c   6 days ago       105MB
+nginx                             latest    f0b8a9a54136   6 days ago       133MB
+ngnx                              develop   f0b8a9a54136   6 days ago       133MB
+ubuntu                            latest    7e0aa2d69a15   3 weeks ago      72.7MB
+hello-world                       latest    d1165f221234   2 months ago     13.3kB
+root@vagrant:~/projects/app1# docker ps -a
+CONTAINER ID   IMAGE         COMMAND                  CREATED          STATUS                      PORTS     NAMES
+f8557caf13d4   hello-world   "/hello"                 32 minutes ago   Exited (0) 32 minutes ago             jovial_robinson
+44ee5b0b73bd   hello-world   "/hello"                 24 hours ago     Exited (0) 24 hours ago               festive_jang
+8449eea16e82   nginx         "/docker-entrypoint.…"   24 hours ago     Up 24 hours                 80/tcp    stoic_bell
+e09595d47583   nginx         "/docker-entrypoint.…"   24 hours ago     Exited (0) 24 hours ago               objective_hoover
+root@vagrant:~/projects/app1# docker run -d --name app2 new:v2 sleep 200
+458caa5f1d1b1240c84c9cdcc5cee873696f200c22beb13b66a1138593261f6a
+root@vagrant:~/projects/app1# docker exec -it app2 bash
+root@458caa5f1d1b:/# cd /var/tmp
+root@458caa5f1d1b:/var/tmp# cat file1
+Hello This is fro docker file
+root@458caa5f1d1b:/var/tmp#
+root@458caa5f1d1b:/var/tmp# exit
+exit
+root@vagrant:~/projects/app1# ls
+Dockerfile  file1  files
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker build -t new:v2 .
+Sending build context to Docker daemon   5.12kB
+Step 1/12 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/12 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/12 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/12 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/12 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/12 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/12 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/12 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/12 : RUN pwd
+ ---> Using cache
+ ---> c21ab4ec598f
+Step 10/12 : RUN mkdir /new
+ ---> Using cache
+ ---> 7d2a57cd6d03
+Step 11/12 : RUN pwd
+ ---> Using cache
+ ---> b003dab4344e
+Step 12/12 : ADD file1 /var/tmp
+ ---> 3900c466da4b
+Successfully built 3900c466da4b
+Successfully tagged new:v2
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker run -d --name app3 new:v2 sleep 200
+34792b43968813c42595b9aec4faec645f87c18f4ef6a86351d3f9a44694ac92
+root@vagrant:~/projects/app1# docker exec -it app3 bash
+root@34792b439688:/# cd /var/tmp
+root@34792b439688:/var/tmp# ls
+file1
+root@34792b439688:/var/tmp# cat file1
+Hello This is fro docker file
+root@34792b439688:/var/tmp# root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# pwd
+/root/projects/app1
+root@vagrant:~/projects/app1# ls
+Dockerfile  file1  files
+root@vagrant:~/projects/app1# wget https://the.earth.li/~sgtatham/putty/latest/putty-0.75.tar.gz
+--2021-05-19 03:10:27--  https://the.earth.li/~sgtatham/putty/latest/putty-0.75.tar.gz
+Resolving the.earth.li (the.earth.li)... 93.93.131.124, 2a00:1098:86:4d:c0ff:ee:15:900d
+Connecting to the.earth.li (the.earth.li)|93.93.131.124|:443... connected.
+HTTP request sent, awaiting response... 302 Found
+Location: https://the.earth.li/~sgtatham/putty/0.75/putty-0.75.tar.gz [following]
+--2021-05-19 03:10:28--  https://the.earth.li/~sgtatham/putty/0.75/putty-0.75.tar.gz
+Reusing existing connection to the.earth.li:443.
+HTTP request sent, awaiting response... 200 OK
+Length: 2731167 (2.6M) [application/x-gzip]
+Saving to: ‘putty-0.75.tar.gz’
+
+putty-0.75.tar.gz                 100%[===========================================================>]   2.60M  1.29MB/s    in 2.0s
+
+2021-05-19 03:10:30 (1.29 MB/s) - ‘putty-0.75.tar.gz’ saved [2731167/2731167]
+
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# ls
+Dockerfile  file1  files  putty-0.75.tar.gz
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker build -t new:v2 .
+Sending build context to Docker daemon  2.737MB
+Step 1/12 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/12 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/12 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/12 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/12 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/12 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/12 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/12 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/12 : RUN pwd
+ ---> Using cache
+ ---> c21ab4ec598f
+Step 10/12 : RUN mkdir /new
+ ---> Using cache
+ ---> 7d2a57cd6d03
+Step 11/12 : RUN pwd
+ ---> Using cache
+ ---> b003dab4344e
+Step 12/12 : COPY putty-0.75.tar.gz /var/tmp/
+ ---> 07f275f0d9e6
+Successfully built 07f275f0d9e6
+Successfully tagged new:v2
+root@vagrant:~/projects/app1# wget https://the.earth.li/~sgtatham/putty/latest/putty-0.75.tar.gz
+root@vagrant:~/projects/app1# docker run -d --name app4 new:v2 sleep 200
+52055f919d3ef044f9cea4ffc8cb1bc74574fac2f54022bf8c78b6259bab6d93
+root@vagrant:~/projects/app1# docker exec -it app4 bash
+root@52055f919d3e:/# cd /var/tmp
+root@52055f919d3e:/var/tmp# ls
+putty-0.75.tar.gz
+root@52055f919d3e:/var/tmp# exit
+exit
+root@vagrant:~/projects/app1# pwd
+/root/projects/app1
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker run -d --name app4 new:v2 sleep 200
+docker: Error response from daemon: Conflict. The container name "/app4" is already in use by container "52055f919d3ef044f9cea4ffc8cb1bc74574fac2f54022bf8c78b6259bab6d93". You have to remove (or rename) that container to be able to reuse that name.
+See 'docker run --help'.
+root@vagrant:~/projects/app1# docker build -t new:v2 .
+Sending build context to Docker daemon  2.737MB
+Step 1/12 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/12 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/12 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/12 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/12 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/12 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/12 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/12 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/12 : RUN pwd
+ ---> Using cache
+ ---> c21ab4ec598f
+Step 10/12 : RUN mkdir /new
+ ---> Using cache
+ ---> 7d2a57cd6d03
+Step 11/12 : RUN pwd
+ ---> Using cache
+ ---> b003dab4344e
+Step 12/12 : ADD putty-0.75.tar.gz /var/tmp/
+ ---> b244d381b6f2
+Successfully built b244d381b6f2
+Successfully tagged new:v2
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker run -d --name app5 new:v2 sleep 200
+a7c21367b1d44ec1ca371797e6f60a5be085f38c07a520b56a68c64b089149d1
+root@vagrant:~/projects/app1# docker exec -it app5
+"docker exec" requires at least 2 arguments.
+See 'docker exec --help'.
+
+Usage:  docker exec [OPTIONS] CONTAINER COMMAND [ARG...]
+
+Run a command in a running container
+root@vagrant:~/projects/app1# docker exec -it app5 bash
+root@a7c21367b1d4:/# cd /var/tmp
+root@a7c21367b1d4:/var/tmp# ls
+putty-0.75
+root@a7c21367b1d4:/var/tmp# exit
+exit
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# ls
+Dockerfile  file1  files  putty-0.75.tar.gz
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker build -t new:v2 .
+Sending build context to Docker daemon  2.737MB
+Step 1/12 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/12 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/12 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/12 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/12 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/12 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/12 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/12 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/12 : RUN pwd
+ ---> Using cache
+ ---> c21ab4ec598f
+Step 10/12 : RUN mkdir /new
+ ---> Using cache
+ ---> 7d2a57cd6d03
+Step 11/12 : RUN pwd
+ ---> Using cache
+ ---> b003dab4344e
+Step 12/12 : COPY https://the.earth.li/~sgtatham/putty/latest/putty-0.75.tar.gz /var/tmp
+COPY failed: source can't be a URL for COPY
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker build -t new:v2 .
+Sending build context to Docker daemon  2.737MB
+Step 1/12 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/12 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/12 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/12 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/12 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/12 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/12 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/12 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/12 : RUN pwd
+ ---> Using cache
+ ---> c21ab4ec598f
+Step 10/12 : RUN mkdir /new
+ ---> Using cache
+ ---> 7d2a57cd6d03
+Step 11/12 : RUN pwd
+ ---> Using cache
+ ---> b003dab4344e
+Step 12/12 : ADD https://the.earth.li/~sgtatham/putty/latest/putty-0.75.tar.gz /var/tmp
+Downloading [==================================================>]  2.731MB/2.731MB
+ ---> 9cc576452e43
+Successfully built 9cc576452e43
+Successfully tagged new:v2
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker run -d --name app6 new:v2 sleep 200
+5e462ae420e1d6cb4a07696e4a1f3504b441d5c9ed092dc0e71cbe21d730816e
+root@vagrant:~/projects/app1# docker exec -it app6 bash
+root@5e462ae420e1:/# ls
+bin  boot  dev  etc  home  lib  lib32  lib64  libx32  media  mnt  new  opt  proc  root  run  sbin  srv  sys  test  tmp  usr  var
+root@5e462ae420e1:/# cd /var/tmp
+root@5e462ae420e1:/var/tmp# ls
+putty-0.75.tar.gz
+root@5e462ae420e1:/var/tmp# exit
+exit
+root@vagrant:~/projects/app1# ls
+Dockerfile  file1  files  putty-0.75.tar.gz
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# pwd
+/root/projects/app1
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED        STATUS        PORTS     NAMES
+8449eea16e82   nginx     "/docker-entrypoint.…"   25 hours ago   Up 25 hours   80/tcp    stoic_bell
+root@vagrant:~/projects/app1# docker exec -it 8449eea16e82^C
+root@vagrant:~/projects/app1#
+root@vagrant:~/projects/app1# docker ps
+CONTAINER ID   IMAGE     COMMAND                  CREATED        STATUS        PORTS     NAMES
+8449eea16e82   nginx     "/docker-entrypoint.…"   25 hours ago   Up 25 hours   80/tcp    stoic_bell
+root@vagrant:~/projects/app1# docker ps -a
+CONTAINER ID   IMAGE          COMMAND                  CREATED             STATUS                         PORTS     NAMES
+5e462ae420e1   new:v2         "sleep 200"              15 minutes ago      Exited (0) 12 minutes ago                app6
+a7c21367b1d4   b244d381b6f2   "sleep 200"              19 minutes ago      Exited (0) 15 minutes ago                app5
+52055f919d3e   07f275f0d9e6   "sleep 200"              20 minutes ago      Exited (0) 17 minutes ago                app4
+34792b439688   3900c466da4b   "sleep 200"              26 minutes ago      Exited (0) 23 minutes ago                app3
+458caa5f1d1b   360193fe7e80   "sleep 200"              29 minutes ago      Exited (0) 26 minutes ago                app2
+f8557caf13d4   hello-world    "/hello"                 About an hour ago   Exited (0) About an hour ago             jovial_robinson
+44ee5b0b73bd   hello-world    "/hello"                 24 hours ago        Exited (0) 24 hours ago                  festive_jang
+8449eea16e82   nginx          "/docker-entrypoint.…"   25 hours ago        Up 25 hours                    80/tcp    stoic_bell
+e09595d47583   nginx          "/docker-entrypoint.…"   25 hours ago        Exited (0) 25 hours ago                  objective_hoover
+root@vagrant:~/projects/app1# vi Dockerfile
+root@vagrant:~/projects/app1# docker build -t base:v2 .
+Sending build context to Docker daemon  2.737MB
+Step 1/14 : FROM ubuntu:latest
+ ---> 7e0aa2d69a15
+Step 2/14 : LABEL maintainer="retheshnair"
+ ---> Using cache
+ ---> 78dd043035cf
+Step 3/14 : LABEL email="retheshnair@gmail.com"
+ ---> Using cache
+ ---> ac0c306a561c
+Step 4/14 : LABEL Team="DevOps team"
+ ---> Using cache
+ ---> b61c0986d550
+Step 5/14 : RUN apt-get update -y
+ ---> Using cache
+ ---> 16e2ccecb4d4
+Step 6/14 : RUN mkdir test
+ ---> Using cache
+ ---> 0da24b57d023
+Step 7/14 : RUN cd test && pwd
+ ---> Using cache
+ ---> c8031697064c
+Step 8/14 : RUN pwd
+ ---> Using cache
+ ---> 203099448561
+Step 9/14 : WORKDIR /test
+ ---> Using cache
+ ---> 4b5db259a296
+Step 10/14 : RUN pwd
+ ---> Using cache
+ ---> a6d67afa441c
+Step 11/14 : RUN mkdir /new
+ ---> Using cache
+ ---> 588d9f0365c8
+Step 12/14 : WORKDIR /new
+ ---> Using cache
+ ---> 715c52f15f50
+Step 13/14 : RUN pwd
+ ---> Using cache
+ ---> a05c2883d55c
+Step 14/14 : ADD https://the.earth.li/~sgtatham/putty/latest/putty-0.75.tar.gz /var/tmp
+Downloading [==================================================>]  2.731MB/2.731MB
+ ---> 611dc4643fd0
+Successfully built 611dc4643fd0
+Successfully tagged base:v2
+root@vagrant:~/projects/app1#
