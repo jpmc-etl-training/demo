@@ -1,5 +1,7 @@
 create schema if not exists s3_copy;
 
+drop table s3_copy.users;
+
 create table s3_copy.users(
     userid integer not null distkey sortkey,
     username char(8),
@@ -73,32 +75,32 @@ create table s3_copy.sales(
     commission decimal(8,2),
     saletime timestamp);
 
-copy s3_copy.users from 's3://awssampledbuswest2/tickit/allusers_pipe.txt' 
-credentials 'aws_iam_role=arn:aws:iam::366142015340:role/myRedshiftRole' 
-delimiter '|' region 'us-west-2';
-
-copy s3_copy.venue from 's3://awssampledbuswest2/tickit/venue_pipe.txt' 
-credentials 'aws_iam_role=arn:aws:iam::366142015340:role/myRedshiftRole' 
-delimiter '|' region 'us-west-2';
+copy s3_copy.users from 's3://rettestbucket/tickit/allusers_pipe.txt' 
+credentials 'aws_iam_role=arn:aws:iam::187493414600:role/myRedshiftRole' 
+delimiter '|' region 'us-east-1';
+                            
+copy s3_copy.venue from 's3://awssampledbuseast1/tickit/venue_pipe.txt' 
+credentials 'aws_iam_role=arn:aws:iam::187493414600:role/myRedshiftRole' 
+delimiter '|' region 'us-east-1';
 
 copy s3_copy.category from 's3://awssampledbuswest2/tickit/category_pipe.txt' 
-credentials 'aws_iam_role=arn:aws:iam::366142015340:role/myRedshiftRole' 
+credentials 'aws_iam_role=arn:aws:iam::187493414600:role/myRedshiftRole' 
 delimiter '|' region 'us-west-2';
 
 copy s3_copy.date from 's3://awssampledbuswest2/tickit/date2008_pipe.txt' 
-credentials 'aws_iam_role=arn:aws:iam::366142015340:role/myRedshiftRole' 
+credentials 'aws_iam_role=arn:aws:iam::187493414600:role/myRedshiftRole' 
 delimiter '|' region 'us-west-2';
 
 copy s3_copy.event from 's3://awssampledbuswest2/tickit/allevents_pipe.txt' 
-credentials 'aws_iam_role=arn:aws:iam::366142015340:role/myRedshiftRole' 
+credentials 'aws_iam_role=arn:aws:iam::187493414600:role/myRedshiftRole' 
 delimiter '|' timeformat 'YYYY-MM-DD HH:MI:SS' region 'us-west-2';
 
 copy s3_copy.listing from 's3://awssampledbuswest2/tickit/listings_pipe.txt' 
-credentials 'aws_iam_role=arn:aws:iam::366142015340:role/myRedshiftRole' 
+credentials 'aws_iam_role=arn:aws:iam::187493414600:role/myRedshiftRole' 
 delimiter '|' region 'us-west-2';
 
 copy s3_copy.sales from 's3://awssampledbuswest2/tickit/sales_tab.txt'
-credentials 'aws_iam_role=arn:aws:iam::366142015340:role/myRedshiftRole'
+credentials 'aws_iam_role=arn:aws:iam::187493414600:role/myRedshiftRole'
 delimiter '\t' timeformat 'MM/DD/YYYY HH:MI:SS' region 'us-west-2';
 
 select * from s3_copy.users limit 10;
