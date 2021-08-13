@@ -1,6 +1,4 @@
-#Log into the Control Plane Node to drive these demos.
-ssh aen@c1-cp1
-cd ~/content/course/03/demos
+
 
 
 #Demo 1 - Creating and accessing Secrets
